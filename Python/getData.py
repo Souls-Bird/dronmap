@@ -6,6 +6,10 @@ import serial
 x_value = 0
 sender_1_rssi = 0
 sender_2_rssi = 0
+old_N_1 = 0
+old_N_2 = 0
+N_packet_1 = -1
+N_packet_2 = -1
 ser = serial.Serial('/dev/ttyACM0')
 print(ser.name)
 
@@ -25,16 +29,30 @@ while True:
             "sender_2_rssi": sender_2_rssi
         }
 
-        csv_writer.writerow(info)
-        print(x_value, sender_1_rssi, sender_2_rssi)
+        try:
+            parsedPacket = ser.readline().decode("utf-8").split("\t")
+        except UnicodeDecodeError:
+            parsedPacket = "CORRUPTED PACKET"
+            print("CORRUPTED PACKET")
 
-        x_value += 1
-        parsedPacket = ser.readline().decode("utf-8").split("\t")
         if parsedPacket[0] == "SENDER1":
             sender_1_rssi = int(parsedPacket[2])
+            N_packet_1 = int(parsedPacket[1])
+            x_value = N_packet_1
         elif parsedPacket[0] == "SENDER2":
             sender_2_rssi = int(parsedPacket[2])
+            N_packet_2 = int(parsedPacket[1])
+            x_value = N_packet_2
         else:
-            print("PACKET ERROR")
+            print("PACKET NAME ERROR")
+
+        #Gestion des doublons
+        if N_packet_1 > old_N_1 or N_packet_2 > old_N_2:
+            csv_writer.writerow(info)
+            print(x_value, sender_1_rssi, sender_2_rssi)
+            old_N_1 = N_packet_1
+            old_N_2 = N_packet_2
+        else:
+            print("Doublon ou deja recu")
 
     time.sleep(1)
