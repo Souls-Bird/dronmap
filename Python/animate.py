@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
 def animate(i):
-    data1 = pd.read_csv('./data/E4/data1.csv')
-    data2 = pd.read_csv('./data/E4/data2.csv')
-    data1 = data1.tail(40)
-    data2 = data2.tail(40)
+    data1 = pd.read_csv('./data/E1/data1.csv')
+    data2 = pd.read_csv('./data/E1/data2.csv')
+    data1 = data1.tail(100)
+    data2 = data2.tail(100)
     x1 = data1['x_value']
     y1 = data1['sender_rssi']
     x2 = data2['x_value']
