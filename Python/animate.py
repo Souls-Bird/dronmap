@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
 def animate(i):
-    data1 = pd.read_csv('./data/E3/data1.csv')
-    data2 = pd.read_csv('./data/E3/data2.csv')
+    data1 = pd.read_csv('./data/E4/data1.csv')
+    data2 = pd.read_csv('./data/E4/data2.csv')
     data1 = data1.tail(40)
     data2 = data2.tail(40)
     x1 = data1['x_value']

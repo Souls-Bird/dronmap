@@ -10,8 +10,8 @@ old_N_2 = 0
 N_packet_1 = -1
 N_packet_2 = -1
 ser = serial.Serial('/dev/ttyACM0')
-pathData1 = './data/E3/data1.csv'
-pathData2 = './data/E3/data2.csv'
+pathData1 = './data/E4/data1.csv'
+pathData2 = './data/E4/data2.csv'
 print(ser.name)
 
 fieldnames = ["x_value", "sender_rssi"]
