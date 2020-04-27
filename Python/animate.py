@@ -2,9 +2,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
+path = './data/E5/E53'
+
 def animate(i):
-    data1 = pd.read_csv('./data/E1/data1.csv')
-    data2 = pd.read_csv('./data/E1/data2.csv')
+    data1 = pd.read_csv(path+'/data1.csv')
+    data2 = pd.read_csv(path+'/data2.csv')
     data1 = data1.tail(100)
     data2 = data2.tail(100)
     x1 = data1['x_value']
