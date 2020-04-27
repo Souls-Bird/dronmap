@@ -10,7 +10,7 @@ old_N_2 = 0
 N_packet_1 = -1
 N_packet_2 = -1
 ser = serial.Serial('/dev/ttyACM0')
-pathData = './data/E5/E53'
+pathData = './data/E3/E34'
 print(ser.name)
 
 fieldnames = ["x_value", "sender_rssi"]
@@ -51,7 +51,7 @@ while True:
                     else:
                         print("doublon 1")
 
-                elif parsedPacket[0] == "edgar2":
+                elif parsedPacket[0] == "michel2":
                     N_packet_2 = int(parsedPacket[1])
                     if N_packet_2 > old_N_2:
                         old_N_2 = N_packet_2

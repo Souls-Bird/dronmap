@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-path = './data/E5/E53'
+path = './data/E3/E34'
 
 def animate(i):
     data1 = pd.read_csv(path+'/data1.csv')
