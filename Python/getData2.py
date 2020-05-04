@@ -124,7 +124,5 @@ while True:
             except ValueError:
                 print("CORRUPTED PACKET (Value Error)")
 
-            except IndexError:
-                print("Experience finished")
 
     time.sleep(1)
