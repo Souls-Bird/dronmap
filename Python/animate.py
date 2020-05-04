@@ -2,13 +2,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-path = './data/E3/E34'
+path = input('Entrez le path des données à tracer : ')
 
 def animate(i):
     data1 = pd.read_csv(path+'/data1.csv')
     data2 = pd.read_csv(path+'/data2.csv')
-    data1 = data1.tail(100)
-    data2 = data2.tail(100)
+    data1 = data1.tail(500)
+    data2 = data2.tail(500)
     x1 = data1['x_value']
     y1 = data1['sender_rssi']
     x2 = data2['x_value']
