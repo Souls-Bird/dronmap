@@ -15,11 +15,11 @@ K1 = 1
 K2 = 1
 ser = serial.Serial('/dev/ttyACM0')
 print(ser.name)
-pathDataA = './data/868_E2/E2_0dB'
-pathDataB = './data/868_E2/E2_3dB'
-pathDataC = './data/868_E2/E2_6dB'
-pathDataD = './data/868_E2/E2_9dB'
-pathDataE = './data/868_E2/E2_12dB'
+pathDataA = './data/868_E4/E4_0dB'
+pathDataB = './data/868_E4/E4_3dB'
+pathDataC = './data/868_E4/E4_6dB'
+pathDataD = './data/868_E4/E4_9dB'
+pathDataE = './data/868_E4/E4_12dB'
 myPaths = [pathDataA, pathDataB, pathDataC, pathDataD, pathDataE]
 path1 = pathDataA
 path2 = pathDataA
@@ -123,6 +123,9 @@ while True:
 
             except ValueError:
                 print("CORRUPTED PACKET (Value Error)")
+
+            except IndexError:
+                print("Experience finished")
 
 
     time.sleep(1)

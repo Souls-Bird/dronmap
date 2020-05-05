@@ -4,7 +4,6 @@ import pandas as pd
 from math import sqrt
 
 #PARAMETERS
-path = './data/868_E1/E1_0dB'
 step_power = 3
 N = 100
 
@@ -73,12 +72,22 @@ def trace_averaged(data_mean_stdev, ax):
     yerr1 = data_mean_stdev[1][0]
     yerr2 = data_mean_stdev[1][1]
 
+    npAvrg1 = np.array(avrg1)
+    npAvrg2 = np.array(avrg2)
+
     power = np.arange(0, 13, step_power)
+
+    m1, b1 = np.polyfit(power, npAvrg1, 1)
+    m2, b2 = np.polyfit(power, npAvrg2, 1)
 
     # ax.plot(power, avrg1, label='Sender 1')
     # ax.plot(power, avrg2, label='Sender 2')
     ax.errorbar(power, avrg1, yerr=yerr1, label='Sender 1')
     ax.errorbar(power, avrg2, yerr=yerr2, label='Sender 2')
+    ax.plot(power, m1*power + b1, '--')
+    ax.plot(power, m2*power + b2, '--')
+    ax.text(5, avrg1[2]+4,'m='+str(np.around(m1, decimals=2))+', b='+str(np.around(b1, decimals=2)))
+    ax.text(5, avrg2[2]-4,'m='+str(np.around(m2, decimals=2))+', b='+str(np.around(b2, decimals=2)))
     ax.set_xlabel('Sending power (dB)')
     ax.set_ylabel('RSSI averaged on 100 packets (dBm)')
     ax.set_xticks(power)
@@ -102,15 +111,24 @@ if __name__ == "__main__":
 
     data = ['./data/868_E1/E1_0dB', './data/868_E1/E1_3dB', './data/868_E1/E1_6dB', './data/868_E1/E1_9dB', './data/868_E1/E1_12dB']
     data2 = ['./data/868_E2/E2_0dB', './data/868_E2/E2_3dB', './data/868_E2/E2_6dB', './data/868_E2/E2_9dB', './data/868_E2/E2_12dB']
+    data3 = ['./data/868_E3/E3_0dB', './data/868_E3/E3_3dB', './data/868_E3/E3_6dB', './data/868_E3/E3_9dB', './data/868_E3/E3_12dB']
+    data4 = ['./data/868_E4/E4_0dB', './data/868_E4/E4_3dB', './data/868_E4/E4_6dB', './data/868_E4/E4_9dB', './data/868_E4/E4_12dB']
 
-    fig, ((ax, ax2), (ax3, ax4)) = plt.subplots(nrows=2, ncols=2, figsize=(14, 8))
-    trace_averaged(read_mean_stdev(data2), ax)
-    trace_averaged(read_mean_stdev(data), ax2)
+    fig, ((ax, ax2, ax3, ax4), (ax5, ax6, ax7, ax8)) = plt.subplots(nrows=2, ncols=4, figsize=(18, 8))
+    trace_averaged(read_mean_stdev(data), ax)
+    trace_averaged(read_mean_stdev(data2), ax2)
+    trace_averaged(read_mean_stdev(data3), ax3)
+    trace_averaged(read_mean_stdev(data4), ax4)
     ax.set_title('Distance : 12 mètres')
     ax2.set_title('Distance : 24 mètres')
-    trace_error(read_errors(data2), ax3)
-    trace_error(read_errors(data), ax4)
-    print(read_errors(data))
-    print(read_errors(data2))
+    ax3.set_title('Distance : 32 mètres')
+    ax4.set_title('Distance : 44 mètres')
+    trace_error(read_errors(data), ax5)
+    trace_error(read_errors(data2), ax6)
+    trace_error(read_errors(data3), ax7)
+    trace_error(read_errors(data4), ax8)
+
+
+
     fig.tight_layout()
     plt.show()
