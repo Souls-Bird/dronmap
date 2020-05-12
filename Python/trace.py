@@ -2,10 +2,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from math import sqrt
+import os
 
 #PARAMETERS
 step_power = 3
-N = 100
+step_distance = 12
+N = 200
 
 def mean(data):
     return sum(data) / len(data)
@@ -18,15 +20,6 @@ def stdev(data):
     etype = sqrt(x/len(data))
     return etype
 
-def read_data(paths):
-    datas1 = []
-    datas2 = []
-
-    for path in paths:
-        datas1.append(pd.read_csv(path+'/data1.csv').tail(N))
-        datas2.append(pd.read_csv(path+'/data2.csv').tail(N))
-
-    return (datas1, datas2)
 
 #INPUT : A list of received packets on N sent packets
 #OUTPUT : the error rate of the serie, in %.
@@ -66,6 +59,24 @@ def read_errors(paths):
         errors2.append(error_rate(dataNode2))
     return (errors1, errors2)
 
+def read_complete(paths):
+    complete_data1 = [[0 for x in range(len(os.listdir(paths[0])))] for y in range(len(paths))]
+    complete_data2 = [[0 for x in range(len(os.listdir(paths[0])))] for y in range(len(paths))]
+    i = 0
+
+    for path_dist in paths:
+        path_pow = [path_dist+'/E'+str(i+1)+'_'+str(3*k)+'dB' for k in range(5)]
+        j = 0
+        for path in path_pow:
+            dataNode1 = pd.read_csv(path+'/data1.csv')['sender_rssi']
+            dataNode2 = pd.read_csv(path+'/data2.csv')['sender_rssi']
+            complete_data1[i][j] = mean(dataNode1)
+            complete_data2[i][j] = mean(dataNode2)
+            j += 1
+        i += 1
+
+    return (complete_data1, complete_data2)
+
 def trace_averaged(data_mean_stdev, ax):
     avrg1 = data_mean_stdev[0][0]
     avrg2 = data_mean_stdev[0][1]
@@ -88,7 +99,7 @@ def trace_averaged(data_mean_stdev, ax):
     ax.plot(power, m2*power + b2, '--')
     ax.text(5, avrg1[2]+4,'m='+str(np.around(m1, decimals=2))+', b='+str(np.around(b1, decimals=2)))
     ax.text(5, avrg2[2]-4,'m='+str(np.around(m2, decimals=2))+', b='+str(np.around(b2, decimals=2)))
-    ax.set_xlabel('Sending power (dB)')
+    ax.set_xlabel('Sending power (dBm)')
     ax.set_ylabel('RSSI averaged on 100 packets (dBm)')
     ax.set_xticks(power)
     ax.legend(loc='upper left')
@@ -107,28 +118,62 @@ def trace_error(data_errors, ax):
     ax.set_xticks(power)
     ax.legend(loc='upper left')
 
-if __name__ == "__main__":
-
+def graphe_rssi_error():
     data = ['./data/868_E1/E1_0dB', './data/868_E1/E1_3dB', './data/868_E1/E1_6dB', './data/868_E1/E1_9dB', './data/868_E1/E1_12dB']
     data2 = ['./data/868_E2/E2_0dB', './data/868_E2/E2_3dB', './data/868_E2/E2_6dB', './data/868_E2/E2_9dB', './data/868_E2/E2_12dB']
     data3 = ['./data/868_E3/E3_0dB', './data/868_E3/E3_3dB', './data/868_E3/E3_6dB', './data/868_E3/E3_9dB', './data/868_E3/E3_12dB']
     data4 = ['./data/868_E4/E4_0dB', './data/868_E4/E4_3dB', './data/868_E4/E4_6dB', './data/868_E4/E4_9dB', './data/868_E4/E4_12dB']
+    data5 = ['./data/868_E5/E5_0dB', './data/868_E5/E5_3dB', './data/868_E5/E5_6dB', './data/868_E5/E5_9dB', './data/868_E5/E5_12dB']
 
-    fig, ((ax, ax2, ax3, ax4), (ax5, ax6, ax7, ax8)) = plt.subplots(nrows=2, ncols=4, figsize=(18, 8))
+
+    fig, ((ax, ax2, ax3, ax4, ax5), (axb, ax2b, ax3b, ax4b, ax5b)) = plt.subplots(nrows=2, ncols=5, figsize=(18, 8))
     trace_averaged(read_mean_stdev(data), ax)
     trace_averaged(read_mean_stdev(data2), ax2)
     trace_averaged(read_mean_stdev(data3), ax3)
     trace_averaged(read_mean_stdev(data4), ax4)
+    trace_averaged(read_mean_stdev(data5), ax5)
     ax.set_title('Distance : 12 mètres')
     ax2.set_title('Distance : 24 mètres')
-    ax3.set_title('Distance : 32 mètres')
-    ax4.set_title('Distance : 44 mètres')
-    trace_error(read_errors(data), ax5)
-    trace_error(read_errors(data2), ax6)
-    trace_error(read_errors(data3), ax7)
-    trace_error(read_errors(data4), ax8)
-
-
-
+    ax3.set_title('Distance : 36 mètres')
+    ax4.set_title('Distance : 48 mètres')
+    ax5.set_title('Distance : 60 mètres')
+    trace_error(read_errors(data), axb)
+    trace_error(read_errors(data2), ax2b)
+    trace_error(read_errors(data3), ax3b)
+    trace_error(read_errors(data4), ax4b)
+    trace_error(read_errors(data5), ax5b)
     fig.tight_layout()
     plt.show()
+
+def trace_3D_rssi(complete_data, ax3D):
+    power = np.arange(0, 13, step_power)
+    distance = np.arange(12, 49, step_distance)
+    X, Y = np.meshgrid(power, distance, sparse=True)
+    myData = np.array(complete_data)
+    ax3D.plot_surface(X, Y, myData)
+    ax3D.set_xlabel('Sending Power (dBm)')
+    ax3D.set_ylabel('Distance (m)')
+
+
+
+if __name__ == "__main__":
+
+    graphe_rssi_error()
+    # data5 = ['./data/868_E5/E5_0dB', './data/868_E5/E5_3dB', './data/868_E5/E5_6dB', './data/868_E5/E5_9dB', './data/868_E5/E5_12dB']
+    #
+    #
+    # fig = plt.figure()
+    # ax = fig.gca()
+    # trace_averaged(read_mean_stdev(data5), ax)
+    # plt.show()
+
+
+    # fig = plt.figure(figsize=(14,8))
+    # ax1 = fig.add_subplot(1,2,1,projection='3d')
+    # ax2 = fig.add_subplot(1,2,2,projection='3d')
+    # trace_3D_rssi(read_complete(['./data/868_E1', './data/868_E2', './data/868_E3', './data/868_E4'])[0], ax1)
+    # trace_3D_rssi(read_complete(['./data/868_E1', './data/868_E2', './data/868_E3', './data/868_E4'])[1], ax2)
+    # ax1.set_title('sender 1')
+    # ax2.set_title('sender 2')
+    # fig.tight_layout()
+    # plt.show()

@@ -15,13 +15,13 @@ K1 = 1
 K2 = 1
 ser = serial.Serial('/dev/ttyACM0')
 print(ser.name)
-pathDataA = './data/868_E5/E5_0dB'
-pathDataB = './data/868_E5/E5_3dB'
-pathDataC = './data/868_E5/E5_6dB'
-pathDataD = './data/868_E5/E5_9dB'
-pathDataE = './data/868_E5/E5_12dB'
-# pathDataF = './data/test3/6'
-myPaths = [pathDataA, pathDataB, pathDataC, pathDataD, pathDataE]
+pathDataA = './data/test3/1'
+pathDataB = './data/test3/2'
+pathDataC = './data/test3/3'
+pathDataD = './data/test3/4'
+pathDataE = './data/test3/5'
+pathDataF = './data/test3/6'
+myPaths = [pathDataA, pathDataB, pathDataC, pathDataD, pathDataE, pathDataF]
 path1 = pathDataA
 path2 = pathDataA
 fieldnames = ["x_value", "sender_rssi"]
@@ -34,17 +34,9 @@ info2 = {
     "sender_rssi": sender_rssi,
 }
 
-for path in myPaths:
-    with open(path+'/data1.csv', 'w') as csv_file:
-        csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        csv_writer.writeheader()
-    with open(path+'/data2.csv', 'w') as csv_file:
-        csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        csv_writer.writeheader()
-
 
 #PARAMETRES
-N = 200 #Nombre de points pour une puissance, à une distance donnée
+N = 10 #Nombre de points pour une puissance, à une distance donnée
 
 while True:
     with open(path1+'/data1.csv', 'a') as csv_file1:
