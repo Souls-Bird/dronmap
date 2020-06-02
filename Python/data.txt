@@ -1,6 +1,0 @@
-hello 916	-60
-hello 917	-57
-hello 917	-57
-hello 918	-59
-hello 919	-59
-hello 920	-58

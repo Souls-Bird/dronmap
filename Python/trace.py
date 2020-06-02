@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from math import sqrt
 import os
+from haversine import haversine
 
 #PARAMETERS
 step_power = 3
@@ -158,6 +159,12 @@ def trace_3D_rssi(complete_data, ax3D):
 
 if __name__ == "__main__":
 
+
+    #EXEMPLE COMPUTE DISTANCE WITH GPS
+    gps1 = [-83.2783726,34.398273645]
+    gps2 = [0.0,0.0]
+    distGPS = haversine(gps1, gps2, unit='m')
+    print(str(distGPS)+" m")
     graphe_rssi_error()
     # data5 = ['./data/868_E5/E5_0dB', './data/868_E5/E5_3dB', './data/868_E5/E5_6dB', './data/868_E5/E5_9dB', './data/868_E5/E5_12dB']
     #
