@@ -36,10 +36,11 @@ Adafruit_BME680 bme; // I2C
 //[LoRa] Initialisation ---------------------------------
 int N = 10; //number of packets to send with same power
 int counter = 0;
-int power = 0;
+int power = 14;
 int K = 1;   //how many time we increased power
 int SF = 7;  //Spreading factor [7;12]
 int CR = 5;  //Coding rate (5 = 4/5) [5;8]
+static unsigned nextInterval = 2500;
 
 void setup() {
   Serial.begin(115200);
@@ -54,13 +55,14 @@ void setup() {
   }
   LoRa.setTxPower(power);
 
+
   //[GPS] Setup ---------------------------------
   // 9600 NMEA is the default baud rate for Adafruit MTK GPS's- some use 4800
   GPS.begin(9600);
   // uncomment this line to turn on RMC (recommended minimum) and GGA (fix data) including altitude
-  GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
+  //GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
   // uncomment this line to turn on only the "minimum recommended" data
-  //GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
+  GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
   // For parsing data, we don't suggest using anything but either RMC only or RMC+GGA since
   // the parser doesn't care about other sentences at this time
   // Set the update rate
@@ -93,11 +95,11 @@ void loop() {
 
   //[LoRa] loop ---------------------------------
   // Increase the sending power of 3 dBm every N packets
-  if(counter > N*K){
+  /*if(counter > N*K){
     power += 3;
     K++;
     LoRa.setTxPower(power);
-  }
+    }*/
 
   //[GPS] loop ---------------------------------
   // read data from the GPS in the 'main loop'
@@ -110,72 +112,74 @@ void loop() {
     // a tricky thing here is if we print the NMEA sentence, or data
     // we end up not listening and catching other sentences!
     // so be very wary if using OUTPUT_ALLDATA and trying to print out data
-    //Serial.println(GPS.lastNMEA()); // this also sets the newNMEAreceived() flag to false
+    Serial.println(GPS.lastNMEA()); // this also sets the newNMEAreceived() flag to false
     if (!GPS.parse(GPS.lastNMEA())) // this also sets the newNMEAreceived() flag to false
       Serial.println("Failed to parse NMEA sentence");
-      return; // we can fail to parse a sentence in which case we should just wait for another
+    return; // we can fail to parse a sentence in which case we should just wait for another
   }
 
-  //[BME680] loop ---------------------------------
-  if (! bme.performReading()) {
-    Serial.println("Failed to perform reading :(");
-    return;
-  }
-  
-  static unsigned nextInterval = 2500;
-  if (millis() - timer > nextInterval){
-      timer = millis(); // reset the timer
-      nextInterval = 1500 + random(800, 1200);
-      
-      Serial.print("Sending packet: ");
-      Serial.println(counter);
-      
-      Serial.print("N2\t");
-      Serial.print(counter);
-      Serial.print("\t");
-      Serial.print(power);
-      Serial.print("\t");
-      Serial.print(SF);
-      Serial.print("\t");
-      Serial.print(CR);
-      Serial.print("\t");
-      Serial.print(GPS.latitude, 4); Serial.print("\t"); Serial.print(GPS.lat);
-      Serial.print("\t");
-      Serial.print(GPS.longitude, 4); Serial.print("\t"); Serial.print(GPS.lon);
-      Serial.print("\t");
-      Serial.print(bme.temperature); // temperature in °C
-      Serial.print("\t");
-      Serial.print(bme.pressure / 100.0); // pressure in hPa
-      Serial.print("\t");
-      Serial.print(bme.humidity); // humidity in %
-      Serial.print("\t");
-      Serial.println(bme.readAltitude(SEALEVELPRESSURE_HPA)); // approximation of altitude in m
 
-      // send packet
-      LoRa.beginPacket();
-      LoRa.print("N2\t");
-      LoRa.print(counter);
-      LoRa.print("\t");
-      LoRa.print(power);
-      LoRa.print("\t");
-      LoRa.print(SF);
-      LoRa.print("\t");
-      LoRa.print(CR);
-      LoRa.print("\t");
-      LoRa.print(GPS.latitude); LoRa.print("\t"); LoRa.print(GPS.lat);
-      LoRa.print("\t");
-      LoRa.print(GPS.longitude); LoRa.print("\t"); LoRa.print(GPS.lon);
-      LoRa.print("\t");
-      LoRa.print(bme.temperature); // temperature in °C
-      LoRa.print("\t");
-      LoRa.print(bme.pressure / 100.0); // pressure in hPa
-      LoRa.print("\t");
-      LoRa.print(bme.humidity); // humidity in %
-      LoRa.print("\t");
-      LoRa.println(bme.readAltitude(SEALEVELPRESSURE_HPA)); // approximation of altitude in m
-      LoRa.endPacket();
-    
-      counter++;
+
+
+  if (millis() - timer > nextInterval) {
+    timer = millis(); // reset the timer
+    nextInterval = 1500 + random(800, 1200);
+
+    //[BME680] loop ---------------------------------
+    if (! bme.performReading()) {
+      Serial.println("Failed to perform reading :(");
+      return;
+    }
+
+    Serial.print("Sending packet: ");
+    Serial.println(counter);
+
+    Serial.print("N2\t");
+    Serial.print(counter);
+    Serial.print("\t");
+    Serial.print(power);
+    Serial.print("\t");
+    Serial.print(SF);
+    Serial.print("\t");
+    Serial.print(CR);
+    Serial.print("\t");
+    Serial.print(GPS.latitude, 4); Serial.print("\t"); Serial.print(GPS.lat);
+    Serial.print("\t");
+    Serial.print(GPS.longitude, 4); Serial.print("\t"); Serial.print(GPS.lon);
+    Serial.print("\t");
+    Serial.print(bme.temperature); // temperature in °C
+    Serial.print("\t");
+    Serial.print(bme.pressure / 100.0); // pressure in hPa
+    Serial.print("\t");
+    Serial.print(bme.humidity); // humidity in %
+    Serial.print("\t");
+    Serial.println(bme.readAltitude(SEALEVELPRESSURE_HPA)); // approximation of altitude in m
+
+    // send packet
+    LoRa.beginPacket();
+    LoRa.print("N2\t");
+    LoRa.print(counter);
+    LoRa.print("\t");
+    LoRa.print(power);
+    LoRa.print("\t");
+    LoRa.print(SF);
+    LoRa.print("\t");
+    LoRa.print(CR);
+    LoRa.print("\t");
+    LoRa.print(GPS.latitude, 4); LoRa.print("\t"); LoRa.print(GPS.lat);
+    LoRa.print("\t");
+    LoRa.print(GPS.longitude, 4); LoRa.print("\t"); LoRa.print(GPS.lon);
+    LoRa.print("\t");
+    LoRa.print(bme.temperature); // temperature in °C
+    LoRa.print("\t");
+    LoRa.print(bme.pressure / 100.0); // pressure in hPa
+    LoRa.print("\t");
+    LoRa.print(bme.humidity); // humidity in %
+    LoRa.print("\t");
+    LoRa.print(bme.readAltitude(SEALEVELPRESSURE_HPA)); // approximation of altitude in m
+    LoRa.endPacket();
+
+    counter++;
   }
-      
+
 }

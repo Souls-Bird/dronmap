@@ -26,7 +26,7 @@ K1 = 1
 K2 = 1
 ser = serial.Serial('/dev/ttyACM0')
 print(ser.name)
-pathDataA = './data/test5/1'
+pathDataA = './data/'
 pathDataB = './data/test5/2'
 pathDataC = './data/test5/3'
 pathDataD = './data/test5/4'
