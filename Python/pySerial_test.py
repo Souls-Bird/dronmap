@@ -1,3 +1,11 @@
+# ------------------------------------------------------
+# Tested with Ubuntu 18.04.3 LTS and python 3.6.9
+#
+#This is just a quick test of the serial library
+#
+# contact : theotime.balaguer@insa-lyon.fr
+# ------------------------------------------------------
+
 import serial
 import numpy as np
 import matplotlib.pyplot as plt

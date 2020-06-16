@@ -1,3 +1,9 @@
+# ----------------------------------------------------
+# This is an old version of the acquisition program intended to receive data from the LoRa Receiver and store it into a csv file.
+# 
+# THIS VERSION SHOULD NOT BE USED, it is bugged, uncommented and was coded as a first draw. Please refer to getData2.py.
+# ----------------------------------------------------
+
 import csv
 import time
 import random

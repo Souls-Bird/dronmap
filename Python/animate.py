@@ -1,3 +1,13 @@
+# ------------------------------------------------------
+# Tested with Ubuntu 18.04.3 LTS and python 3.6.9
+#
+# This is a short program to see RSSI evolution of two LoRa senders in real time.
+# It asks for a path to a folder containing .../data1.csv and .../data2.csv and plots the RSSI evolution over the packet number.
+# Has been made for development purpose.
+#
+# contact : theotime.balaguer@insa-lyon.fr
+# ------------------------------------------------------
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation

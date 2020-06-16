@@ -1,3 +1,14 @@
+# ------------------------------------------------------
+# Tested with Ubuntu 18.04.3 LTS and python 3.6.9
+#
+# THIS IS AN OLD VERSION OF THE PROGRAM THAT SHOULD PROCESS DATA FOR LORA EXPERIMENT
+# It is probably bugged and uncommented.
+# Please, refer to trace.py for a cleaner implementation
+#
+# contact : theotime.balaguer@insa-lyon.fr
+# ------------------------------------------------------
+
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from math import sqrt

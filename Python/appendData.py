@@ -1,3 +1,30 @@
+# ------------------------------------------------------
+# Tested with Ubuntu 18.04.3 LTS and python 3.6.9
+#
+# /!\ ONLY DIFFERENCE with getData2.py is that we don't create the .csv files and hence you append received data to existing files /!\
+#
+# ====== Test-bed description ======
+# This program is intended to work with three boards Arduino MKR1300.
+# First and second boards are sending LoRa packets regularly and can be powered by independent source. --> Refer to Arduino/LoRa_sender_sensors.ino
+# Third board is receiving LoRa packets and forwards every packet to the it's serial interface. --> Refer to Arduino/LoRa_receiver.ino
+# Third board must be plugged to the computer running this code with USB port 0 (change string '/dev/ttyACM0' if plugged to another port)
+#
+# ====== Program description ======
+# Read the Serial data flow coming from receiver MKR130.
+# Every packet is parsed into a list of values (separator inside LoRa packet is '\t', encoding is utf-8).
+#
+# Then, we read values NODE_NAME and PACKET_COUNTER to decide if and where we store the packet.
+# We identify sender identity with the NODE_NAME value and store packets separately for each sender (files are |pathData|/data1.csv and |pathData|/data2.csv)
+# Packets can be received twice, so we check if the PACKET_COUNTER value is greater than the last received packet.
+# In this case, we store the packet, otherwise, we throw it.
+#
+# We also store different sending power into different files. THIS IS HARDCODED.
+# You have to check at the sender side (LoRa_sender_sensors.ino) the number of packets sent with one sending power and make sure that the "N" value is corresponding.
+# When the received packet is the last packet sent with the current power, we change the current saving file to the next value of the myPaths list.
+#
+# contact : theotime.balaguer@insa-lyon.fr
+# ------------------------------------------------------
+
 import csv
 import time
 import random

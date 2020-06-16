@@ -1,3 +1,28 @@
+# ------------------------------------------------------
+# Tested with Ubuntu 18.04.3 LTS and python 3.6.9
+#
+# ====== Test-bed description ======
+# This program is intended to work with three boards Arduino MKR1300.
+# First and second boards are sending LoRa packets regularly and can be powered by independent source. --> Refer to Arduino/LoRa_sender_sensors.ino
+# Third board is receiving LoRa packets and forwards every packet to the it's serial interface. --> Refer to Arduino/LoRa_receiver.ino
+# Third board must be plugged to the computer running this code with USB port 0 (change string '/dev/ttyACM0' if plugged to another port)
+#
+# ====== Program description ======
+# Read the Serial data flow coming from receiver MKR130.
+# Every packet is parsed into a list of values (separator inside LoRa packet is '\t', encoding is utf-8).
+#
+# Then, we read values NODE_NAME and PACKET_COUNTER to decide if and where we store the packet.
+# We identify sender identity with the NODE_NAME value and store packets separately for each sender (files are |pathData|/data1.csv and |pathData|/data2.csv)
+# Packets can be received twice, so we check if the PACKET_COUNTER value is greater than the last received packet.
+# In this case, we store the packet, otherwise, we throw it.
+#
+# We also store different sending power into different files. THIS IS HARDCODED.
+# You have to check at the sender side (LoRa_sender_sensors.ino) the number of packets sent with one sending power and make sure that the "N" value is corresponding.
+# When the received packet is the last packet sent with the current power, we change the current saving file to the next value of the myPaths list.
+#
+# contact : theotime.balaguer@insa-lyon.fr
+# ------------------------------------------------------
+
 import csv
 import time
 import random
@@ -26,6 +51,9 @@ K1 = 1
 K2 = 1
 ser = serial.Serial('/dev/ttyACM0')
 print(ser.name)
+
+# Paths to the saving folder. Each folder should correspond to a given sending power. THESE FOLDERS MUST EXIST BEFORE EXECUTION
+# Create more paths and expend myPaths list if you need more sending power.
 pathDataA = './data/'
 pathDataB = './data/test5/2'
 pathDataC = './data/test5/3'
@@ -77,6 +105,9 @@ info2 = {
     "sender_rssi": sender_rssi,
 }
 
+# Creation of the csv files and initialisation of the field names.
+# CAREFUL, this erases previously saved .../data1.csv and .../data2.csv if the pathData has not been changed.
+# You can use appendData.py if you want to continue a previous experience without losing the data.
 for path in myPaths:
     with open(path+'/data1.csv', 'w') as csv_file:
         csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -87,7 +118,7 @@ for path in myPaths:
 
 
 #PARAMETRES
-N = 10 #Nombre de points pour une puissance, à une distance donnée
+N = 10 # Number of points for one given sending power and distance
 
 while True:
     with open(path1+'/data1.csv', 'a') as csv_file1:
@@ -96,12 +127,13 @@ while True:
             csv_writer1 = csv.DictWriter(csv_file1, fieldnames=fieldnames)
             csv_writer2 = csv.DictWriter(csv_file2, fieldnames=fieldnames)
 
-            #Récupération du paquet et découpage en tableau d'arguments
+# Get the packet from serial and parse it into list of values
+# The LoRa packet must correspond to this :
+# PACKET = [ NODE_NAME | PACKET_COUNTER | POWER | SF | CR | LATITUDE | LAT | LONGITUDE | LON | TEMPERATURE | PRESSURE | HUMIDITY | ALTITUDE | RSSI ]
+# UNITY = [ string | int | int | int | int | float | char | float | char | float(°C) | float(hPa) | float(%) | float(m) | int ]
             try:
                 parsedPacket = ser.readline().decode("utf-8").split("\t")
                 print("\033[93m"+str(parsedPacket)+"\033[0m")
-#PACKET = [ NODE_NAME | PACKET_COUNTER | POWER | SF | CR | LATITUDE | LAT | LONGITUDE | LON | TEMPERATURE | PRESSURE | HUMIDITY | ALTITUDE | RSSI ]
-#UNITY = [ string | int | int | int | int | float | char | float | char | float(°C) | float(hPa) | float(%) | float(m) | int ]
                 if parsedPacket[0] == "N1":
                     N_packet_1 = int(parsedPacket[1])
                     if N_packet_1 > old_N_1:
@@ -148,26 +180,27 @@ while True:
                 else:
                     print("PACKET NAME ERROR :", parsedPacket)
 
-                # if info['x_value'] >= K1*N:
-                #     try:
-                #         path1 = myPaths[K1]
-                #         K1 += 1
-                #     except IndexError:
-                #         K1 = 100
-                #         print('Index_error (1)')
-                #
-                #
-                # if info2['x_value'] >= N*K2:
-                #     try:
-                #         path2 = myPaths[K2]
-                #         K2 += 1
-                #     except IndexError:
-                #         K2 = 100
-                #         print('Index_error (2)')
-                #
-                # if K1 == 100 and K2 == 100:
-                #     print("Terminate experience")
-                #     sys.exit()
+                # Changes the current path where each packet should be saved when we reach the last packet for one given power
+                if info['x_value'] >= K1*N:
+                    try:
+                        path1 = myPaths[K1]
+                        K1 += 1
+                    except IndexError:
+                        K1 = 100
+                        print('Index_error (1)')
+
+                if info2['x_value'] >= N*K2:
+                    try:
+                        path2 = myPaths[K2]
+                        K2 += 1
+                    except IndexError:
+                        K2 = 100
+                        print('Index_error (2)')
+
+                # Kill the program if we reach the end of the myPaths list and stored all the data.
+                if K1 == 100 and K2 == 100:
+                    print("Terminate experience")
+                    sys.exit()
 
             except UnicodeDecodeError:
                 print("CORRUPTED PACKET (Decode Error)")
