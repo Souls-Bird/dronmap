@@ -9,6 +9,7 @@ float latitude = 45.786237960462;
 float longitude = 4.87975798742;
 uint32_t timer = millis();
 static unsigned nextInterval = 1000;
+byte[] byteArray = [4];
 
 
 void setup() {
@@ -28,7 +29,8 @@ void setup() {
 
 void loop() {
   for (int i = 0; i < 4; i++) {
-    Serial.println(latitude.byte[i]);
+    byteArray[i] = (int)
+    Serial.println();
   }
 
   /*

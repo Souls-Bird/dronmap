@@ -1,3 +1,25 @@
+/*********************************************
+This sketch is implemented to work with Arduino MKRWAN 1300, Adafruit's Ultimate GPS and an Adafruit's BME680 sensor breakout
+Plugging of the test-bed:
+[GPS] <-> [MKR1300]
+VIN - 5V
+GND - GND
+RX - TX
+TX - RX
+
+[BME680] <-> [MKR1300]
+VIN - 5V
+GND - GND
+SCK - SCL
+SDI - SDA
+
+This program sends LoRa packets continuously.
+Each packet contains GPS information, temperature, pressure, humidity and altitude
+The packet looks like :
+[ NODE_NAME | PACKET_COUNTER | POWER | SF | CR | LATITUDE | LAT | LONGITUDE | LON | TEMPERATURE | PRESSURE | HUMIDITY | ALTITUDE | RSSI ]
+where "|" is actualy "\t"
+**********************************************/
+
 #include <SPI.h>
 #include <LoRa.h>
 
@@ -49,6 +71,7 @@ void setup() {
   Serial.println("LoRa Sender");
 
   //[LoRa] Setup ---------------------------------
+  // We use LoRa's band G3 [869.4 , 869.65] with 500 mW EIRP limitation and 10% duty cycle limitation
   if (!LoRa.begin(869500000)) {
     Serial.println("Starting LoRa failed!");
     while (1);
@@ -118,9 +141,7 @@ void loop() {
     return; // we can fail to parse a sentence in which case we should just wait for another
   }
 
-
-
-
+  //We wait on average 2.5 sec before sending the next packet, including a random drift to prevent consecutive packet collision
   if (millis() - timer > nextInterval) {
     timer = millis(); // reset the timer
     nextInterval = 1500 + random(800, 1200);

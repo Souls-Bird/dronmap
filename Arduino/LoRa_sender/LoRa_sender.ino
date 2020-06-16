@@ -1,3 +1,9 @@
+/*
+This is an old version of LoRa_sender_sensors.ino, which can be used without the sensors because every data is hard-coded.
+The program sends a LoRa packet every 2.7 seconds. Every N packets sent, it increases the sending power by 3 dBm. Procedure is repeated K times
+(Anyway, there is a hardware limit to the sending power within the MKR1300 board. It can only get to 14 dBm.)
+*/
+
 #include <SPI.h>
 #include <LoRa.h>
 
@@ -50,7 +56,7 @@ void loop() {
   LoRa.endPacket();
 
   counter++;
-  
+
   long randNum = random(800, 1200);
   delay(1700+randNum);
 }
