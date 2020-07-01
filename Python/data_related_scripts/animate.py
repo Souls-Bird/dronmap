@@ -15,20 +15,20 @@ from matplotlib.animation import FuncAnimation
 path = input('Entrez le path des données à tracer : ')
 
 def animate(i):
-    data1 = pd.read_csv(path+'/data1.csv')
-    data2 = pd.read_csv(path+'/data2.csv')
+    data1 = pd.read_csv(path+'/packets.csv')
+    # data2 = pd.read_csv(path+'/data2.csv')
     data1 = data1.tail(500)
-    data2 = data2.tail(500)
+    # data2 = data2.tail(500)
     x1 = data1['x_value']
     y1 = data1['sender_rssi']
-    x2 = data2['x_value']
-    y2 = data2["sender_rssi"]
+    # x2 = data2['x_value']
+    # y2 = data2["sender_rssi"]
 
 
     plt.cla()       #clear the axis
 
     plt.plot(x1, y1, label='Sender 1')
-    plt.plot(x2, y2, label='Sender 2')
+    # plt.plot(x2, y2, label='Sender 2')
     plt.ylabel('RSSI')
     plt.xlabel('Packet Number')
     plt.legend(loc='upper left')

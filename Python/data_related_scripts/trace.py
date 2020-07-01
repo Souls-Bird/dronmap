@@ -3,7 +3,7 @@
 #
 #
 # ====== Program description ======
-# This program is meant to visualize and analyse data collected with the getData2.py program.
+# This program is meant to visualize and analyse data collected with the getData2.py program or the experience programs running Olympe.
 # It uses library matplotlib to trace diagrams and figures showing results of the experience and breaking down a lot of points into more usable averaged data.
 #
 #
@@ -16,7 +16,7 @@ import numpy as np
 import pandas as pd
 from math import sqrt
 import os
-from haversine import haversine
+# from haversine import haversine
 
 #PARAMETERS
 step_power = 3        # Power shift at each step of the experience, in dBm
@@ -204,17 +204,30 @@ def trace_3D_rssi(complete_data, ax3D):
     ax3D.set_xlabel('Sending Power (dBm)')
     ax3D.set_ylabel('Distance (m)')
 
-
-
 if __name__ == "__main__":
 
 
+
+
+    #EXEMPLE trace
+    data = create_path('exp1_outdoor_stade')
+    print(data)
+    fig = plt.figure()
+    ax = fig.gca()
+
+    trace_averaged(read_mean_stdev(data), ax)
+    plt.show()
+
     #EXEMPLE COMPUTE DISTANCE WITH GPS
-    gps1 = [-83.2783726,34.398273645]
-    gps2 = [0.0,0.0]
-    distGPS = haversine(gps1, gps2, unit='m')
-    print(str(distGPS)+" m")
-    graphe_rssi_error()
+    # gps1 = [-83.2783726,34.398273645]
+    # gps2 = [0.0,0.0]
+    # distGPS = haversine(gps1, gps2, unit='m')
+    # print(str(distGPS)+" m")
+    # graphe_rssi_error()
+
+
+
+
     # data5 = ['./data/868_E5/E5_0dB', './data/868_E5/E5_3dB', './data/868_E5/E5_6dB', './data/868_E5/E5_9dB', './data/868_E5/E5_12dB']
     #
     #

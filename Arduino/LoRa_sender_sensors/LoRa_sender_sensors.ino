@@ -24,17 +24,17 @@ where "|" is actualy "\t"
 #include <LoRa.h>
 
 //[GPS] Initialisation ---------------------------------
-#include <Adafruit_GPS.h>
+//#include <Adafruit_GPS.h>
 
 // what's the name of the hardware serial port?
-#define GPSSerial Serial1
+//#define GPSSerial Serial1
 
 // Connect to the GPS on the hardware port
-Adafruit_GPS GPS(&GPSSerial);
+//Adafruit_GPS GPS(&GPSSerial);
 
 // Set GPSECHO to 'false' to turn off echoing the GPS data to the Serial console
 // Set to 'true' if you want to debug and listen to the raw GPS sentences
-#define GPSECHO false
+//#define GPSECHO false
 
 uint32_t timer = millis();
 
@@ -58,7 +58,7 @@ Adafruit_BME680 bme; // I2C
 //[LoRa] Initialisation ---------------------------------
 int N = 10; //number of packets to send with same power
 int counter = 0;
-int power = 14;
+int power = 3;
 int K = 1;   //how many time we increased power
 int SF = 7;  //Spreading factor [7;12]
 int CR = 5;  //Coding rate (5 = 4/5) [5;8]
@@ -78,7 +78,7 @@ void setup() {
   }
   LoRa.setTxPower(power);
 
-
+/*
   //[GPS] Setup ---------------------------------
   // 9600 NMEA is the default baud rate for Adafruit MTK GPS's- some use 4800
   GPS.begin(9600);
@@ -100,7 +100,7 @@ void setup() {
 
   // Ask for firmware version
   GPSSerial.println(PMTK_Q_RELEASE);
-
+*/
   //[BME680] Setup ---------------------------------
   if (!bme.begin()) {
     Serial.println("Could not find a valid BME680 sensor, check wiring!");
@@ -123,7 +123,7 @@ void loop() {
     K++;
     LoRa.setTxPower(power);
     }*/
-
+/*
   //[GPS] loop ---------------------------------
   // read data from the GPS in the 'main loop'
   char c = GPS.read();
@@ -140,12 +140,13 @@ void loop() {
       Serial.println("Failed to parse NMEA sentence");
     return; // we can fail to parse a sentence in which case we should just wait for another
   }
-
+*/
   //We wait on average 2.5 sec before sending the next packet, including a random drift to prevent consecutive packet collision
   if (millis() - timer > nextInterval) {
     timer = millis(); // reset the timer
-    nextInterval = 1500 + random(800, 1200);
-
+    //nextInterval = 1500 + random(800, 1200);
+    nextInterval = 2500;
+    
     //[BME680] loop ---------------------------------
     if (! bme.performReading()) {
       Serial.println("Failed to perform reading :(");
@@ -164,10 +165,10 @@ void loop() {
     Serial.print("\t");
     Serial.print(CR);
     Serial.print("\t");
-    Serial.print(GPS.latitude, 4); Serial.print("\t"); Serial.print(GPS.lat);
+/*    Serial.print(GPS.latitude, 4); Serial.print("\t"); Serial.print(GPS.lat);
     Serial.print("\t");
     Serial.print(GPS.longitude, 4); Serial.print("\t"); Serial.print(GPS.lon);
-    Serial.print("\t");
+    Serial.print("\t");*/
     Serial.print(bme.temperature); // temperature in °C
     Serial.print("\t");
     Serial.print(bme.pressure / 100.0); // pressure in hPa
@@ -187,10 +188,10 @@ void loop() {
     LoRa.print("\t");
     LoRa.print(CR);
     LoRa.print("\t");
-    LoRa.print(GPS.latitude, 4); LoRa.print("\t"); LoRa.print(GPS.lat);
+/*    LoRa.print(GPS.latitude, 4); LoRa.print("\t"); LoRa.print(GPS.lat);
     LoRa.print("\t");
-    LoRa.print(GPS.longitude, 4); LoRa.print("\t"); LoRa.print(GPS.lon);
-    LoRa.print("\t");
+    LoRa.print(GPS.longitude, 4); LoRa.print("\t"); LoRa.print(GPS.lon);*
+    LoRa.print("\t");*/
     LoRa.print(bme.temperature); // temperature in °C
     LoRa.print("\t");
     LoRa.print(bme.pressure / 100.0); // pressure in hPa
