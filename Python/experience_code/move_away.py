@@ -65,7 +65,6 @@ def save_packets(seconds, path):
     sender_power = 0
     sender_SF = 0
     sender_CR = 0
-    sender_rssi = 0
     # sender_latitude = 0
     # sender_lat = ''
     # sender_longitude = 0
@@ -74,6 +73,8 @@ def save_packets(seconds, path):
     sender_pressure = 0.0
     sender_humidity = 0.0
     sender_altitude = 0.0
+    sender_rssi = 0
+    sender_snr = 0.0
     old_n = 0             # value of the last received packet number
     n_packet = -1         # value of the actual packet number
     K1 = 1
@@ -91,7 +92,8 @@ def save_packets(seconds, path):
         "pressure",
         "humidity",
         "altitude",
-        "sender_rssi"]
+        "sender_rssi",
+        "sender_snr"]
     info = {
         "x_value": x_value,
         "power": sender_power,
@@ -106,6 +108,7 @@ def save_packets(seconds, path):
         "humidity": sender_humidity,
         "altitude": sender_altitude,
         "sender_rssi": sender_rssi,
+        "sender_snr": sender_snr,
     }
 
     with open(path+'/packets.csv', 'w') as csv_file:
@@ -129,7 +132,6 @@ def save_packets(seconds, path):
                     n_packet = int(parsedPacket[1])
                     if n_packet > old_n:
                         old_n = n_packet
-                        info["sender_rssi"] = int(parsedPacket[-1])
                         info["x_value"] = n_packet
                         info["power"] = int(parsedPacket[2])
                         info["SF"] = int(parsedPacket[3])
@@ -142,6 +144,9 @@ def save_packets(seconds, path):
                         info["pressure"] = float(parsedPacket[6])
                         info["humidity"] = float(parsedPacket[7])
                         info["altitude"] = float(parsedPacket[8])
+                        info["sender_rssi"] = int(parsedPacket[-2])
+                        info["sender_snr"] = float(parsedPacket[-1])
+
                         csv_writer.writerow(info)
                         print("1 --->", info)
                     else:
