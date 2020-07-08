@@ -12,9 +12,12 @@ int counter = 0;
 int power = 0;
 int K = 1;   //how many time we increased power
 int SF = 7;  //Spreading factor [7;12]
-int CR = 5;  //Coding rate (5 = 4/5) [5;8]
+int CR = 8;  //Coding rate (5 = 4/5) [5;8]
 float latitude = 45.786237960462216;
 float longitude = 4.879757987425819;
+
+unsigned long t1;
+unsigned long t2;
 
 void setup() {
   Serial.begin(9600);
@@ -27,18 +30,20 @@ void setup() {
     while (1);
   }
   LoRa.setTxPower(power);
+  LoRa.setCodingRate4(CR);
 }
 
 void loop() {
 
-  if(counter > N*K){
+  /*if(counter > N*K){
     power += 3;
     K++;
     LoRa.setTxPower(power);
-  }
+  }*/
   Serial.print("Sending packet: ");
   Serial.println(counter);
 
+  t1 = millis();
   // send packet
   LoRa.beginPacket();
   LoRa.print("N2\t");
@@ -54,9 +59,11 @@ void loop() {
   LoRa.print("\t");
   LoRa.print(longitude);
   LoRa.endPacket();
+  t2 = millis();
+  Serial.print("Time on air : ");
+  Serial.println(t2-t1);
 
   counter++;
 
-  long randNum = random(800, 1200);
-  delay(1700+randNum);
+  delay(2300);
 }

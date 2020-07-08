@@ -57,7 +57,7 @@ from olympe.messages.ardrone3.GPSSettingsState import GPSFixStateChanged, HomeCh
 # Creation of the csv files and initialisation of the field names.
 # CAREFUL, this erases previously saved .../packets.csv if the path has not been changed.
 def save_packets(seconds, path):
-    # print("Starting thread:", threading.current_thread().name)
+    print("Starting thread:", threading.current_thread().name)
     print("Saving packets for "+ str(seconds) +" seconds in \""+path+"\"...")
 
     #INITIALISATIONS
@@ -115,6 +115,9 @@ def save_packets(seconds, path):
         csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         csv_writer.writeheader()
 
+    with open(path+'/corrupted_packets.csv', 'w') as csv_file:
+        time.sleep(1)
+
     start_time = time.time()
     current_time = start_time
     while current_time - start_time < seconds:
@@ -156,14 +159,23 @@ def save_packets(seconds, path):
 
             except UnicodeDecodeError:
                 print("CORRUPTED PACKET (Decode Error)")
+                with open(path+'/corrupted_packets.csv', 'a') as corrupted_csv_file:
+                    corrupted_csv_writer = csv.writer(corrupted_csv_file)
+                    corrupted_csv_writer.writerow(["UnicodeDecodeError"])
 
             except ValueError:
                 print("CORRUPTED PACKET (Value Error)")
+                with open(path+'/corrupted_packets.csv', 'a') as corrupted_csv_file:
+                    corrupted_csv_writer = csv.writer(corrupted_csv_file)
+                    corrupted_csv_writer.writerow(["ValueError"])
 
             except IndexError:
                 print("CORRUPTED PACKET (Index Error)")
+                with open(path+'/corrupted_packets.csv', 'a') as corrupted_csv_file:
+                    corrupted_csv_writer = csv.writer(corrupted_csv_file)
+                    corrupted_csv_writer.writerow(["IndexError"])
 
-    # print("Ending thread:", threading.current_thread().name)
+    print("Ending thread:", threading.current_thread().name)
 
 if __name__ == "__main__":
     print("Starting thread:", threading.current_thread().name)
@@ -175,7 +187,7 @@ if __name__ == "__main__":
     paths = []
 
     for i in range(N_STEPS):
-        path = "./data/"+experience_name+"/"+str(i*FW)+"m"
+        path = "./data/"+experience_name+"/"+str(i)+"_"+str(i*FW)+"m"
         paths.append(path)
         if not os.path.exists(path):
             os.makedirs(path)
@@ -183,56 +195,60 @@ if __name__ == "__main__":
 
     print("\n\n\n ----- Starting experience ----- \n\n\n")
 
-    # 192.168.42.1 to connect to the real drone
-    # 10.202.0.1 to connect to virtual Ethernet interface (Sphinx)
-    with olympe.Drone("192.168.42.1") as drone:
-        drone.connect()
+    saver = threading.Thread(target=save_packets, args=(seconds, paths[0]))
+    saver.start()
+    saver.join()
 
-        # Save the "home" position to be able to get back to it later
-        # drone(GPSFixStateChanged(fixed=1, _timeout=10, _policy='check_wait')).wait()
-        drone(GPSFixStateChanged(_policy="wait"))
-        drone_home = drone.get_state(HomeChanged)
-        print(drone_home)
-
-        drone(
-            TakeOff()
-            >> FlyingStateChanged(state="hovering", _timeout=5)
-        ).wait()
-        print("\n\n\n -----TakeOff complete----- \n\n\n")
-
-        saver = threading.Thread(target=save_packets, args=(45, paths[0]))
-        saver.start()
-        saver.join()
-
-        for STEP in range(1, N_STEPS):
-
-            print("Drone moving "+str(FW*math.cos(DIRECTION*math.pi/180))+" m forward and "+str(FW*math.sin(DIRECTION*math.pi/180))+" up.")
-
-            drone(
-                moveBy(FW*math.cos(DIRECTION*math.pi/180), 0, -FW*math.sin(DIRECTION*math.pi/180), 0)
-                >> FlyingStateChanged(state="hovering", _timeout=5)
-            ).wait()
-
-            saver = threading.Thread(target=save_packets, args=(seconds, paths[STEP]))
-            saver.start()
-            saver.join()
-
-        print("\n\n\n ---- Experience finished, Back to home ---- \n\n\n")
-
-        drone(
-            moveTo(drone_home['latitude'], drone_home['longitude'], drone_home['altitude'], MoveTo_Orientation_mode.NONE, 0.0)
-            >> moveToChanged(status='DONE')
-        ).wait()
-
-        print("\n\n\n ---- Landing... ---- \n\n\n")
-
-        drone(
-            Landing()
-        ).wait()
-
-        print("\n\n\n ---- Drone landed ---- \n\n\n")
-
-        #Leaving the with statement and disconnecting the drone.
+    # # 192.168.42.1 to connect to the real drone
+    # # 10.202.0.1 to connect to virtual Ethernet interface (Sphinx)
+    # with olympe.Drone("192.168.42.1") as drone:
+    #     drone.connect()
+    #
+    #     # Save the "home" position to be able to get back to it later
+    #     # drone(GPSFixStateChanged(fixed=1, _timeout=10, _policy='check_wait')).wait()
+    #     drone(GPSFixStateChanged(_policy="wait"))
+    #     drone_home = drone.get_state(HomeChanged)
+    #     print(drone_home)
+    #
+    #     drone(
+    #         TakeOff()
+    #         >> FlyingStateChanged(state="hovering", _timeout=5)
+    #     ).wait()
+    #     print("\n\n\n -----TakeOff complete----- \n\n\n")
+    #
+    #     saver = threading.Thread(target=save_packets, args=(30, paths[0]))
+    #     saver.start()
+    #     saver.join()
+    #
+    #     for STEP in range(1, N_STEPS):
+    #
+    #         print("Drone moving "+str(FW*math.cos(DIRECTION*math.pi/180))+" m forward and "+str(FW*math.sin(DIRECTION*math.pi/180))+" up.")
+    #
+    #         drone(
+    #             moveBy(FW*math.cos(DIRECTION*math.pi/180), 0, -FW*math.sin(DIRECTION*math.pi/180), 0)
+    #             >> FlyingStateChanged(state="hovering", _timeout=5)
+    #         ).wait()
+    #
+    #         saver = threading.Thread(target=save_packets, args=(seconds, paths[STEP]))
+    #         saver.start()
+    #         saver.join()
+    #
+    #     print("\n\n\n ---- Experience finished, Back to home ---- \n\n\n")
+    #
+    #     drone(
+    #         moveTo(drone_home['latitude'], drone_home['longitude'], drone_home['altitude'], MoveTo_Orientation_mode.NONE, 0.0)
+    #         >> moveToChanged(status='DONE')
+    #     ).wait()
+    #
+    #     print("\n\n\n ---- Landing... ---- \n\n\n")
+    #
+    #     drone(
+    #         Landing()
+    #     ).wait()
+    #
+    #     print("\n\n\n ---- Drone landed ---- \n\n\n")
+    #
+    #     #Leaving the with statement and disconnecting the drone.
 
 
     print("Ending thread:", threading.current_thread().name)

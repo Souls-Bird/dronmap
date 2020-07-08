@@ -77,6 +77,7 @@ void setup() {
     while (1);
   }
   LoRa.setTxPower(power);
+  LoRa.setCodingRate4(CR);
 
 /*
   //[GPS] Setup ---------------------------------
@@ -145,7 +146,7 @@ void loop() {
   if (millis() - timer > nextInterval) {
     timer = millis(); // reset the timer
     //nextInterval = 1500 + random(800, 1200);
-    nextInterval = 2500;
+    nextInterval = 2300;
     
     //[BME680] loop ---------------------------------
     if (! bme.performReading()) {

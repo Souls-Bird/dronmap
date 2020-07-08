@@ -1,0 +1,131 @@
+ ---- Experience finished, Back to home ----
+
+
+
+2020-07-03 14:29:45,178 [INFO] 	olympe.drone.ANAFI-H067290 - _send_command_impl - ardrone3.Piloting.moveTo(45.7858955, 4.878352, 2.0, <MoveTo_Orientation_mode.NONE: 0>, 0.0) has been sent to the device
+2020-07-03 14:29:45,201 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.moveToChanged(latitude=45.7858955, longitude=4.878352, altitude=2.0, orientation_mode=MoveToChanged_Orientation_mode.NONE, heading=78.27671813964844, status=MoveToChanged_Status.RUNNING)
+2020-07-03 14:29:45,352 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.FlyingStateChanged(state=FlyingStateChanged_State.flying)
+2020-07-03 14:29:45,355 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - animation.availability(values='')
+2020-07-03 14:29:52,404 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - rth.home_reachability(status=home_reachability.unknown)
+2020-07-03 14:29:52,490 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=20)
+2020-07-03 14:29:53,100 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=21)
+2020-07-03 14:29:54,528 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - common.CommonState.BatteryStateChanged(percent=72)
+2020-07-03 14:29:55,469 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=20)
+2020-07-03 14:29:56,683 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=19)
+2020-07-03 14:29:58,197 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.SettingsState.MotorErrorStateChanged(motorIds=8, motorError=MotorErrorStateChanged_MotorError.errorMotorStalled)
+2020-07-03 14:29:58,346 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.AlertStateChanged(state=AlertStateChanged_State.cut_out)
+2020-07-03 14:29:58,350 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.moveToChanged(latitude=45.7858955, longitude=4.878352, altitude=2.0, orientation_mode=MoveToChanged_Orientation_mode.NONE, heading=78.27671813964844, status=MoveToChanged_Status.CANCELED)
+2020-07-03 14:29:58,353 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.FlyingStateChanged(state=FlyingStateChanged_State.emergency)
+2020-07-03 14:29:58,357 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.PilotedPOI(latitude=0.0, longitude=0.0, altitude=0.0, status=PilotedPOI_Status.UNAVAILABLE)
+2020-07-03 14:29:58,360 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.PilotedPOIV2(latitude=0.0, longitude=0.0, altitude=0.0, mode=PilotedPOIV2_Mode.free_gimbal, status=PilotedPOIV2_Status.UNAVAILABLE)
+2020-07-03 14:29:58,362 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.NavigateHomeStateChanged(state=NavigateHomeStateChanged_State.unavailable, reason=NavigateHomeStateChanged_Reason.disabled)
+2020-07-03 14:29:58,366 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.state(mode=mode.none, behavior=behavior.idle, animation=animation.none, animation_available='')
+2020-07-03 14:29:58,369 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.mode_info(mode=mode.look_at, missing_requirements='drone_calibrated|drone_gps_good_accuracy|target_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough', improvements='drone_calibrated|drone_gps_good_accuracy|target_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough|image_detection', list_flags='')
+2020-07-03 14:29:58,374 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.mode_info(mode=mode.geographic, missing_requirements='drone_calibrated|drone_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough', improvements='drone_calibrated|drone_gps_good_accuracy|target_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough|image_detection', list_flags='')
+2020-07-03 14:29:58,376 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.mode_info(mode=mode.relative, missing_requirements='drone_calibrated|drone_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough', improvements='drone_calibrated|drone_gps_good_accuracy|target_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough|image_detection', list_flags='')
+2020-07-03 14:29:58,380 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.mode_info(mode=mode.leash, missing_requirements='drone_calibrated|drone_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough', improvements='drone_calibrated|drone_gps_good_accuracy|target_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough|image_detection', list_flags='')
+2020-07-03 14:29:58,383 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.state(mode=mode.none, behavior=behavior.idle, animation=animation.none, animation_available='')
+2020-07-03 14:29:58,386 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - gauge_fw_updater.status(diag=diag.up_to_date, missing_requirements='usb', state=state.ready_to_prepare)
+2020-07-03 14:29:58,388 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=20)
+2020-07-03 14:29:58,391 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.VibrationLevelChanged(state=VibrationLevelChanged_State.warning)
+2020-07-03 14:29:58,393 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.VibrationLevelChanged(state=VibrationLevelChanged_State.critical)
+2020-07-03 14:29:58,535 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=21)
+2020-07-03 14:29:58,732 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.VibrationLevelChanged(state=VibrationLevelChanged_State.ok)
+2020-07-03 14:29:58,735 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.SettingsState.MotorFlightsStatusChanged(nbFlights=37, lastFlightDuration=247, totalFlightDuration=11394)
+2020-07-03 14:29:58,737 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.SettingsState.MotorErrorLastErrorChanged(motorError=MotorErrorLastErrorChanged_MotorError.errorMotorStalled)
+2020-07-03 14:29:58,739 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.FlyingStateChanged(state=FlyingStateChanged_State.landed)
+2020-07-03 14:29:58,740 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.MotionState(state=MotionState_State.moving)
+2020-07-03 14:29:58,741 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.AlertStateChanged(state=AlertStateChanged_State.none)
+2020-07-03 14:29:58,743 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.state(mode=mode.none, behavior=behavior.idle, animation=animation.none, animation_available='')
+2020-07-03 14:29:58,744 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.FlyingStateChanged(state=FlyingStateChanged_State.emergency)
+2020-07-03 14:29:58,745 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.state(mode=mode.none, behavior=behavior.idle, animation=animation.none, animation_available='')
+2020-07-03 14:29:58,748 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.SettingsState.MotorFlightsStatusChanged(nbFlights=37, lastFlightDuration=247, totalFlightDuration=11394)
+2020-07-03 14:29:58,751 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.SettingsState.MotorErrorLastErrorChanged(motorError=MotorErrorLastErrorChanged_MotorError.errorMotorStalled)
+2020-07-03 14:29:58,755 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=23)
+2020-07-03 14:29:58,799 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.FlyingStateChanged(state=FlyingStateChanged_State.landed)
+2020-07-03 14:29:58,801 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.MotionState(state=MotionState_State.moving)
+2020-07-03 14:29:58,804 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.state(mode=mode.none, behavior=behavior.idle, animation=animation.none, animation_available='')
+2020-07-03 14:29:58,950 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=21)
+2020-07-03 14:29:58,952 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.FlyingStateChanged(state=FlyingStateChanged_State.emergency)
+2020-07-03 14:29:58,955 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.SettingsState.MotorFlightsStatusChanged(nbFlights=37, lastFlightDuration=247, totalFlightDuration=11394)
+2020-07-03 14:29:58,957 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.SettingsState.MotorErrorLastErrorChanged(motorError=MotorErrorLastErrorChanged_MotorError.errorMotorStalled)
+2020-07-03 14:29:58,959 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.state(mode=mode.none, behavior=behavior.idle, animation=animation.none, animation_available='')
+2020-07-03 14:29:59,100 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.FlyingStateChanged(state=FlyingStateChanged_State.landed)
+2020-07-03 14:29:59,104 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.MotionState(state=MotionState_State.moving)
+2020-07-03 14:29:59,109 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.state(mode=mode.none, behavior=behavior.idle, animation=animation.none, animation_available='')
+2020-07-03 14:29:59,111 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=23)
+2020-07-03 14:29:59,346 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.FlyingStateChanged(state=FlyingStateChanged_State.emergency)
+2020-07-03 14:29:59,349 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.SettingsState.MotorFlightsStatusChanged(nbFlights=37, lastFlightDuration=247, totalFlightDuration=11394)
+2020-07-03 14:29:59,352 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.SettingsState.MotorErrorLastErrorChanged(motorError=MotorErrorLastErrorChanged_MotorError.errorMotorStalled)
+2020-07-03 14:29:59,355 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.state(mode=mode.none, behavior=behavior.idle, animation=animation.none, animation_available='')
+2020-07-03 14:29:59,357 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=20)
+2020-07-03 14:29:59,402 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.FlyingStateChanged(state=FlyingStateChanged_State.landed)
+2020-07-03 14:29:59,404 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.MotionState(state=MotionState_State.moving)
+2020-07-03 14:29:59,407 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.state(mode=mode.none, behavior=behavior.idle, animation=animation.none, animation_available='')
+2020-07-03 14:29:59,552 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.FlyingStateChanged(state=FlyingStateChanged_State.emergency)
+2020-07-03 14:29:59,555 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.state(mode=mode.none, behavior=behavior.idle, animation=animation.none, animation_available='')
+2020-07-03 14:29:59,556 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.SettingsState.MotorFlightsStatusChanged(nbFlights=37, lastFlightDuration=247, totalFlightDuration=11394)
+2020-07-03 14:29:59,558 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.SettingsState.MotorErrorLastErrorChanged(motorError=MotorErrorLastErrorChanged_MotorError.errorMotorStalled)
+2020-07-03 14:29:59,728 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.FlyingStateChanged(state=FlyingStateChanged_State.landed)
+2020-07-03 14:29:59,731 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.MotionState(state=MotionState_State.moving)
+2020-07-03 14:29:59,734 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.state(mode=mode.none, behavior=behavior.idle, animation=animation.none, animation_available='')
+2020-07-03 14:29:59,736 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=16)
+2020-07-03 14:29:59,960 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=11)
+2020-07-03 14:30:00,003 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.FlyingStateChanged(state=FlyingStateChanged_State.emergency)
+2020-07-03 14:30:00,006 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.SettingsState.MotorFlightsStatusChanged(nbFlights=37, lastFlightDuration=247, totalFlightDuration=11394)
+2020-07-03 14:30:00,010 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.SettingsState.MotorErrorLastErrorChanged(motorError=MotorErrorLastErrorChanged_MotorError.errorMotorStalled)
+2020-07-03 14:30:00,014 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.state(mode=mode.none, behavior=behavior.idle, animation=animation.none, animation_available='')
+2020-07-03 14:30:00,154 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=12)
+2020-07-03 14:30:00,378 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=13)
+2020-07-03 14:30:00,381 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSSettingsState.GPSFixStateChanged(fixed=0)
+2020-07-03 14:30:00,385 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.mode_info(mode=mode.look_at, missing_requirements='drone_calibrated|drone_gps_good_accuracy|target_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough', improvements='drone_calibrated|drone_gps_good_accuracy|target_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough|image_detection', list_flags='')
+2020-07-03 14:30:00,388 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.mode_info(mode=mode.geographic, missing_requirements='drone_calibrated|target_barometer_ok|drone_far_enough|drone_high_enough', improvements='drone_calibrated|drone_gps_good_accuracy|target_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough|image_detection', list_flags='')
+2020-07-03 14:30:00,390 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.mode_info(mode=mode.relative, missing_requirements='drone_calibrated|target_barometer_ok|drone_far_enough|drone_high_enough', improvements='drone_calibrated|drone_gps_good_accuracy|target_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough|image_detection', list_flags='')
+2020-07-03 14:30:00,393 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.mode_info(mode=mode.leash, missing_requirements='drone_calibrated|target_barometer_ok|drone_far_enough|drone_high_enough', improvements='drone_calibrated|drone_gps_good_accuracy|target_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough|image_detection', list_flags='')
+2020-07-03 14:30:04,198 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.FlyingStateChanged(state=FlyingStateChanged_State.landed)
+2020-07-03 14:30:04,345 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.PilotingState.MotionState(state=MotionState_State.moving)
+2020-07-03 14:30:04,348 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.state(mode=mode.none, behavior=behavior.idle, animation=animation.none, animation_available='')
+2020-07-03 14:30:05,027 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSSettingsState.GPSFixStateChanged(fixed=1)
+2020-07-03 14:30:05,178 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=13)
+2020-07-03 14:30:05,183 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.mode_info(mode=mode.look_at, missing_requirements='drone_calibrated|drone_gps_good_accuracy|target_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough', improvements='drone_calibrated|drone_gps_good_accuracy|target_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough|image_detection', list_flags='')
+2020-07-03 14:30:05,186 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.mode_info(mode=mode.geographic, missing_requirements='drone_calibrated|drone_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough', improvements='drone_calibrated|drone_gps_good_accuracy|target_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough|image_detection', list_flags='')
+2020-07-03 14:30:05,189 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.mode_info(mode=mode.relative, missing_requirements='drone_calibrated|drone_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough', improvements='drone_calibrated|drone_gps_good_accuracy|target_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough|image_detection', list_flags='')
+2020-07-03 14:30:05,192 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - follow_me.mode_info(mode=mode.leash, missing_requirements='drone_calibrated|drone_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough', improvements='drone_calibrated|drone_gps_good_accuracy|target_gps_good_accuracy|target_barometer_ok|drone_far_enough|drone_high_enough|image_detection', list_flags='')
+2020-07-03 14:30:05,327 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=12)
+2020-07-03 14:30:05,901 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - ardrone3.GPSState.NumberOfSatelliteChanged(numberOfSatellite=15)
+2020-07-03 14:30:06,396 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - common.NetworkEvent.Disconnection(cause=Disconnection_Cause.off_button)
+2020-07-03 14:30:06,400 [INFO] 	olympe.drone.ANAFI-H067290 - _recv_cmd_cb - common.CommonState.BatteryStateChanged(percent=100)
+net ping failures: 1
+net ping failures: 2
+net ping failures: 3
+net Too many ping failures
+2020-07-03 14:30:14,404 [INFO] 	olympe.drone.ANAFI-H067290 - _link_status_cb - Link status: 0
+2020-07-03 14:30:14,405 [INFO] 	olympe.drone.ANAFI-H067290 - _disconnected_cb - Disconnected from device: ANAFI-H067290
+2020-07-03 14:30:14,407 [INFO] 	olympe.pdraw.ANAFI-H067290 - _destroy_pomp_loop - Pomp loop has been destroyed
+2020-07-03 14:30:14,408 [INFO] 	olympe.pdraw.ANAFI-H067290 - dispose - pdraw callbacks thread loop stopped
+2020-07-03 14:30:14,409 [INFO] 	olympe.pdraw.ANAFI-H067290 - _destroy - destroying yuv buffer pool...
+2020-07-03 14:30:14,410 [INFO] 	olympe.pdraw.ANAFI-H067290 - _destroy - yuv buffer pool destroyed
+2020-07-03 14:30:14,411 [INFO] 	olympe.pdraw.ANAFI-H067290 - _destroy - pdraw thread loop stopped
+2020-07-03 14:30:14,513 [INFO] 	olympe.pdraw.ANAFI-H067290 - _destroy_pomp_loop - Pomp loop has been destroyed
+2020-07-03 14:30:17,414 [INFO] 	olympe.media.ANAFI-H067290 - _shutdown - olympe.media shutdown
+epoll_ctl err=9(Bad file descriptor)
+2020-07-03 14:30:17,416 [INFO] 	olympe.media.ANAFI-H067290 - _destroy_pomp_loop - Pomp loop has been destroyed
+
+
+
+ ---- Landing... ----
+
+
+
+
+
+
+ ---- Drone landed ----
+
+
+
+2020-07-03 14:30:17,447 [INFO] 	olympe.backend - _destroy - Manager has been destroyed
+2020-07-03 14:30:17,448 [INFO] 	olympe.backend - destroy_timer - Pomp loop timer has been destroyed
+2020-07-03 14:30:17,449 [INFO] 	olympe.backend - destroy_timer - Pomp loop timer has been destroyed
+2020-07-03 14:30:17,449 [INFO] 	olympe.backend - _destroy_pomp_loop - Pomp loop has been destroyed
+2020-07-03 14:30:17,453 [INFO] 	olympe.scheduler - _destroy_pomp_loop - Pomp loop has been destroyed
