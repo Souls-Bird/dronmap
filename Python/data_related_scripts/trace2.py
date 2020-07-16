@@ -25,8 +25,7 @@ def stdev(data):
 # Return the error rate in % of a list (i.e. : give the percentage of missing packets in a serie of packets of size N)
 # INPUT: A list of received packets on N sent packets
 # OUTPUT: the error rate of the serie, in %.
-def error_rate(data):
-    Nb_packets_without_errors = 15
+def error_rate(data, Nb_packets_without_errors):
     error = ((Nb_packets_without_errors-len(data))/Nb_packets_without_errors)*100
     return error
 
@@ -47,14 +46,16 @@ def read_mean_stdev(paths):
 # INPUT: A list of paths to folders containing experience's data ['./data/exp1', './data/exp2', './data/exp3', ...]
 # OUTPUT: A 3-dimensional list with this structure:
 # [ [error_rate(exp1, node1), error_rate(exp2, node1), ...], [error_rate(exp1, node2), error_rate(exp2, node2), ...] ]
-def read_errors(paths):
+def read_errors(paths, NbPackets):
     errors = []
+
+    data_0m = pd.read_csv(paths[0]+'/packets.csv')['x_value']
+    errors.append(error_rate(data_0m, 15))
+    paths.pop(0)
 
     for path in paths:
         dataNode = pd.read_csv(path+'/packets.csv')['x_value']
-        print(dataNode)
-        errors.append(error_rate(dataNode))
-    print(errors)
+        errors.append(error_rate(dataNode, NbPackets))
     return errors
 
 # Trace the evolution of RSSI in function of the sending power for two sending nodes
@@ -89,7 +90,7 @@ def trace_error(data_errors, FW, ax):
 
     distances = np.arange(0, len(data_errors)*FW, FW)
 
-    ax.bar(distances, data_errors, label='Sender 1', align='edge')
+    ax.bar(distances, data_errors, label='Drone sender', align='edge')
     ax.set_ylim(0, 100)
     ax.set_xlabel('Distance from receiver (m)')
     ax.set_ylabel('Error rate (%)')
@@ -107,7 +108,11 @@ def create_path(experience_name):
 if __name__ == "__main__":
 
     FW = int(input("Meters forward ? : "))
-    exp_name = input("Experience name ? : ")
+    # exp_name = input("Experience name ? : ")
+    # exp_name2 = input("Experience name ? : ")
+    exp_name = 'exp29_CR5_d30'
+    exp_name2 = 'exp30_CR8_d30'
+
     # fig, (ax1, ax2, ax3, ax4) = plt.subplots(nrows=1, ncols=4, figsize=(22,5))
     #
     # # Creation of a list of paths leading to the raw data
@@ -175,13 +180,22 @@ if __name__ == "__main__":
     # lines_ax4 = ax4.get_lines()
     # ax4.legend((lines_ax4[0], lines_ax4[2], lines_ax4[4]) ,("Power = 3 dBm", "Power = 8 dBm", "Power = 13 dBm"))
 
-    fig = plt.figure()
-    ax = fig.gca()
+    fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(11,5))
     path = create_path(exp_name)
+    path2 = create_path(exp_name2)
 
-    data_errors = read_errors(path)
+    data_errors = read_errors(path, 53)
+    data_errors2 = read_errors(path2, 53)
 
-    trace_error(data_errors, FW, ax)
+    print(data_errors)
+    print(data_errors2)
+
+
+    trace_error(data_errors, FW, ax1)
+    trace_error(data_errors2, FW, ax2)
+
+    ax1.set_title('CR = 5')
+    ax2.set_title('CR = 8')
 
     fig.tight_layout()
     plt.show()

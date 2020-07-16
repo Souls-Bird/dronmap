@@ -195,60 +195,56 @@ if __name__ == "__main__":
 
     print("\n\n\n ----- Starting experience ----- \n\n\n")
 
-    saver = threading.Thread(target=save_packets, args=(seconds, paths[0]))
-    saver.start()
-    saver.join()
+    # 192.168.42.1 to connect to the real drone
+    # 10.202.0.1 to connect to virtual Ethernet interface (Sphinx)
+    with olympe.Drone("192.168.42.1") as drone:
+        drone.connect()
 
-    # # 192.168.42.1 to connect to the real drone
-    # # 10.202.0.1 to connect to virtual Ethernet interface (Sphinx)
-    # with olympe.Drone("192.168.42.1") as drone:
-    #     drone.connect()
-    #
-    #     # Save the "home" position to be able to get back to it later
-    #     # drone(GPSFixStateChanged(fixed=1, _timeout=10, _policy='check_wait')).wait()
-    #     drone(GPSFixStateChanged(_policy="wait"))
-    #     drone_home = drone.get_state(HomeChanged)
-    #     print(drone_home)
-    #
-    #     drone(
-    #         TakeOff()
-    #         >> FlyingStateChanged(state="hovering", _timeout=5)
-    #     ).wait()
-    #     print("\n\n\n -----TakeOff complete----- \n\n\n")
-    #
-    #     saver = threading.Thread(target=save_packets, args=(30, paths[0]))
-    #     saver.start()
-    #     saver.join()
-    #
-    #     for STEP in range(1, N_STEPS):
-    #
-    #         print("Drone moving "+str(FW*math.cos(DIRECTION*math.pi/180))+" m forward and "+str(FW*math.sin(DIRECTION*math.pi/180))+" up.")
-    #
-    #         drone(
-    #             moveBy(FW*math.cos(DIRECTION*math.pi/180), 0, -FW*math.sin(DIRECTION*math.pi/180), 0)
-    #             >> FlyingStateChanged(state="hovering", _timeout=5)
-    #         ).wait()
-    #
-    #         saver = threading.Thread(target=save_packets, args=(seconds, paths[STEP]))
-    #         saver.start()
-    #         saver.join()
-    #
-    #     print("\n\n\n ---- Experience finished, Back to home ---- \n\n\n")
-    #
-    #     drone(
-    #         moveTo(drone_home['latitude'], drone_home['longitude'], drone_home['altitude'], MoveTo_Orientation_mode.NONE, 0.0)
-    #         >> moveToChanged(status='DONE')
-    #     ).wait()
-    #
-    #     print("\n\n\n ---- Landing... ---- \n\n\n")
-    #
-    #     drone(
-    #         Landing()
-    #     ).wait()
-    #
-    #     print("\n\n\n ---- Drone landed ---- \n\n\n")
-    #
-    #     #Leaving the with statement and disconnecting the drone.
+        # Save the "home" position to be able to get back to it later
+        # drone(GPSFixStateChanged(fixed=1, _timeout=10, _policy='check_wait')).wait()
+        drone(GPSFixStateChanged(_policy="wait"))
+        drone_home = drone.get_state(HomeChanged)
+        print(drone_home)
+
+        drone(
+            TakeOff()
+            >> FlyingStateChanged(state="hovering", _timeout=5)
+        ).wait()
+        print("\n\n\n -----TakeOff complete----- \n\n\n")
+
+        saver = threading.Thread(target=save_packets, args=(30, paths[0]))
+        saver.start()
+        saver.join()
+
+        for STEP in range(1, N_STEPS):
+
+            print("Drone moving "+str(FW*math.cos(DIRECTION*math.pi/180))+" m forward and "+str(FW*math.sin(DIRECTION*math.pi/180))+" up.")
+
+            drone(
+                moveBy(FW*math.cos(DIRECTION*math.pi/180), 0, -FW*math.sin(DIRECTION*math.pi/180), 0)
+                >> FlyingStateChanged(state="hovering", _timeout=5)
+            ).wait()
+
+            saver = threading.Thread(target=save_packets, args=(seconds, paths[STEP]))
+            saver.start()
+            saver.join()
+
+        print("\n\n\n ---- Experience finished, Back to home ---- \n\n\n")
+
+        drone(
+            moveTo(drone_home['latitude'], drone_home['longitude'], drone_home['altitude'], MoveTo_Orientation_mode.NONE, 0.0)
+            >> moveToChanged(status='DONE')
+        ).wait()
+
+        print("\n\n\n ---- Landing... ---- \n\n\n")
+
+        drone(
+            Landing()
+        ).wait()
+
+        print("\n\n\n ---- Drone landed ---- \n\n\n")
+
+        #Leaving the with statement and disconnecting the drone.
 
 
     print("Ending thread:", threading.current_thread().name)
