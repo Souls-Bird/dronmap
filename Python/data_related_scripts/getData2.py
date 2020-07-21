@@ -8,15 +8,15 @@
 # Third board must be plugged to the computer running this code with USB port 0 (change string '/dev/ttyACM0' if plugged to another port)
 #
 # ====== Program description ======
-# Read the Serial data flow coming from receiver MKR130.
+# Read the Serial data flow coming from receiver MKR1300.
 # Every packet is parsed into a list of values (separator inside LoRa packet is '\t', encoding is utf-8).
 #
 # Then, we read values NODE_NAME and PACKET_COUNTER to decide if and where we store the packet.
 # We identify sender identity with the NODE_NAME value and store packets separately for each sender (files are |pathData|/data1.csv and |pathData|/data2.csv)
-# Packets can be received twice, so we check if the PACKET_COUNTER value is greater than the last received packet.
+# Packets are sometimes received twice, so we check if the PACKET_COUNTER value is greater than the last received packet.
 # In this case, we store the packet, otherwise, we throw it.
 #
-# We also store different sending power into different files. THIS IS HARDCODED.
+# We also store different sending power into different files. (THIS IS HARDCODED)
 # You have to check at the sender side (LoRa_sender_sensors.ino) the number of packets sent with one sending power and make sure that the "N" value is corresponding.
 # When the received packet is the last packet sent with the current power, we change the current saving file to the next value of the myPaths list.
 #
@@ -118,7 +118,7 @@ for path in myPaths:
 
 
 #PARAMETRES
-N = 10 # Number of points for one given sending power and distance
+N = 10 # Number of points for one given sending power and distance /!\ this value must correpond to the value "N" of the files LoRa_sender_sensors.ino or LoRa_sender.ino
 
 while True:
     with open(path1+'/data1.csv', 'a') as csv_file1:

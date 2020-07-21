@@ -1,6 +1,7 @@
 # ------------------------------------------------------
 # Tested with Ubuntu 18.04.3 LTS and python 3.6.9
 #
+# THIS PROGRAM WAS REPLACED BY trace2.py, PLEASE REFER TO trace2.py FOR NEW VERSION OF VISUALIZATION OF THE DATA
 #
 # ====== Program description ======
 # This program is meant to visualize and analyse data collected with the getData2.py program or the experience programs running Olympe.
@@ -205,9 +206,6 @@ def trace_3D_rssi(complete_data, ax3D):
     ax3D.set_ylabel('Distance (m)')
 
 if __name__ == "__main__":
-
-
-
 
     #EXEMPLE trace
     data = create_path('exp1_outdoor_stade')

@@ -43,12 +43,12 @@ def dm2dd(x):
 
     return (dd_lat, dd_lon)
 
-# Read the given folder (input 1) and trace the evolution of error distance in function of packet number
+# Read the given folder (input: path, must lead to a .csv file with fieldnames "latitude" and "longitude") and trace the evolution of error distance in function of packet number
 # It also computes the average error and give the average position and the error between average position and real position
 def evaluate_GPS_data(path, ax):
-    N = 390
+    N = 390                             # number of values you want to keep, from the end of the values (to get rid of the first values when the GPS was not set-up)
     GPS_errors = []
-    real_pos = [45.768763, 4.876561] # acording to maps, in Decimal Degrees
+    real_pos = [45.768763, 4.876561]    # Real position of the node, acording to maps, in Decimal Degrees
     latitude = np.array(pd.read_csv(path)["latitude"].tail(N))
     longitude = np.array(pd.read_csv(path)["longitude"].tail(N))
     mean_lat = mean(latitude)

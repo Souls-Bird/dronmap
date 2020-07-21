@@ -1,7 +1,7 @@
 # ------------------------------------------------------
 # Tested with Ubuntu 18.04.3 LTS and python 3.6.9
 #
-# /!\ ONLY DIFFERENCE with getData2.py is that we don't create the .csv files and hence you append received data to existing files /!\
+# /!\ ONLY DIFFERENCE with getData2.py is that we don't create the .csv files when the program is launched and hence you append received data to existing .csv files /!\
 #
 # ====== Test-bed description ======
 # This program is intended to work with three boards Arduino MKR1300.

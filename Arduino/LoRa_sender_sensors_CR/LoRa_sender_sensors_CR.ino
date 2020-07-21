@@ -64,7 +64,9 @@ int counter = 0;
 int power = 3;
 int K = 1;   //how many time we increased power
 int SF = 7;  //Spreading factor [7;12]
-int CR = 5;  //Coding rate (5 = 4/5) [5;8]
+int CR;
+int CR1 = 5;  //Coding rate (5 = 4/5) [5;8]
+int CR2 = 8;
 bool flag = true;
 static unsigned nextInterval = 2500;
 
@@ -81,7 +83,7 @@ void setup() {
     while (1);
   }
   LoRa.setTxPower(power);
-  LoRa.setCodingRate4(CR);
+  LoRa.setCodingRate4(CR1);
 
   Serial.println("LoRa initialized");
 
@@ -166,6 +168,16 @@ void loop() {
       Serial.println("Failed to perform reading :(");
       return;
     }
+
+    if (flag){
+      CR = CR1;
+      flag = !flag;
+    } else {
+      CR = CR2;
+      flag = !flag;
+    }
+    
+    LoRa.setCodingRate4(CR);
 
     Serial.print("N2\t");
     Serial.print(counter);

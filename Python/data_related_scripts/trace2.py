@@ -1,3 +1,28 @@
+# ------------------------------------------------------
+# Tested with Ubuntu 18.04.3 LTS and python 3.6.9
+#
+# ====== Program description ======
+# This program make it easy to visualize LoRa transmission data in different ways.
+# The data should be stored in files with this architecture :
+#
+# -- data/
+#     |-- experience_name/
+#         |-- Distance_1/
+#             |-- corrupted_packets.csv
+#             |-- packets.csv
+#         |-- Distance_2/
+#             |-- corrupted_packets.csv
+#             |-- packets.csv
+#         |-- ...
+#         |-- Distance_n/
+#
+# Where the distances folder are named as "NSTEP_DISTANCEm" (ex : 0_0m, 1_10m, 2_20m, ...) so that the folders keep ordered in an alphanumerical way
+#
+
+#
+# contact : theotime.balaguer@insa-lyon.fr
+# ------------------------------------------------------
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -29,33 +54,73 @@ def error_rate(data, Nb_packets_without_errors):
     error = ((Nb_packets_without_errors-len(data))/Nb_packets_without_errors)*100
     return error
 
+# Read the raw data in multiple folders, compute and return the average, standard deviation and length of each serie of values.
+# INPUT: A list of paths to folders containing experience's data. ex : ['./data/exp1/0_0m', './data/exp1/1_10m', './data/exp1/2_20m', ...]
+# OUTPUT: A tuple of 3 lists containing :
+    # - the averaged value of the RSSI field of the data
+    # - the standard deviation of these values
+    # - The number of points that were used to create the average
 def read_mean_stdev(paths):
-    avrg = []
-    yerr = []
-    length = []
+    avrg_rssi = []
+    stdev_rssi = []
+    length_rssi = []
 
     for path in paths:
         dataNode = pd.read_csv(path+'/packets.csv')['sender_rssi']
-        avrg.append(mean(dataNode))
-        yerr.append(stdev(dataNode))
-        length.append(len(dataNode))
+        if len(dataNode) > 0:
+            avrg_rssi.append(mean(dataNode))
+            stdev_rssi.append(stdev(dataNode))
+            length_rssi.append(len(dataNode))
+        else:
+            print("Fichier "+path+"/packets.csv vide.")
+            avrg_rssi.append(0)
+            stdev_rssi.append(0)
+            length_rssi.append(0)
 
-    return (avrg, yerr, length)
+    return (avrg_rssi, stdev_rssi, length_rssi)
 
-# Read the raw data in multiple folders, compute and return error rates for each serie and each node
-# INPUT: A list of paths to folders containing experience's data ['./data/exp1', './data/exp2', './data/exp3', ...]
-# OUTPUT: A 3-dimensional list with this structure:
-# [ [error_rate(exp1, node1), error_rate(exp2, node1), ...], [error_rate(exp1, node2), error_rate(exp2, node2), ...] ]
-def read_errors(paths, NbPackets):
-    errors = []
 
-    data_0m = pd.read_csv(paths[0]+'/packets.csv')['x_value']
-    errors.append(error_rate(data_0m, 15))
-    paths.pop(0)
+def read_snr(paths):
+    avrg_snr = []
+    stdev_snr = []
+    length_snr = []
 
     for path in paths:
+        dataSNR = pd.read_csv(path+'/packets.csv')['sender_snr']
+        if len(dataSNR) > 0:
+            avrg_snr.append(mean(dataSNR))
+            stdev_snr.append(stdev(dataSNR))
+            length_snr.append(len(dataSNR))
+        else:
+            print("Fichier "+path+"/packets.csv vide.")
+            avrg_snr.append(0)
+            stdev_snr.append(0)
+            length_snr.append(0)
+
+    return (avrg_snr, stdev_snr, length_snr)
+
+# Read the raw data in multiple folders, compute and return error rates for each serie and each node
+# INPUT: A list of paths to folders containing experience's data. ex : ['./data/exp1/0_0m', './data/exp1/1_10m', './data/exp1/2_20m', ...]
+# INPUT: The theoretical number of packets that should have been received.
+# OUTPUT: A 3-dimensional list with this structure:
+# [ [error_rate(exp1, node1), error_rate(exp2, node1), ...], [error_rate(exp1, node2), error_rate(exp2, node2), ...] ]
+def read_errors(paths, milliseconds):
+    errors = []
+
+    nb_packets_0m = 30000 / milliseconds
+    nb_packets = 180000 / milliseconds
+
+    print(nb_packets_0m)
+    print(nb_packets)
+
+    data_0m = pd.read_csv(paths[0]+'/packets.csv')['x_value']
+    errors.append(error_rate(data_0m, nb_packets_0m))
+    paths_copy = paths.copy()
+    paths_copy.pop(0)
+
+    for path in paths_copy:
         dataNode = pd.read_csv(path+'/packets.csv')['x_value']
-        errors.append(error_rate(dataNode, NbPackets))
+        errors.append(error_rate(dataNode, nb_packets))
     return errors
 
 # Trace the evolution of RSSI in function of the sending power for two sending nodes
@@ -79,18 +144,44 @@ def trace_averaged(paths, data_mean_stdev_length, FW, ax):
     ax.errorbar(distances, avrg, yerr=yerr)
     ax.plot(distances, m1*distances + b1, '--')
     ax.set_xlabel('Distance from receiver (m)')
-    ax.set_ylabel('RSSI averaged on ~50 packets (dBm)')
+    ax.set_ylabel('RSSI averaged on multiple packets (dBm)')
+    ax.set_xticks(distances)
+    ax.legend(loc='upper right')
+
+def trace_snr(paths, data_snr, FW, ax):
+    avrg_snr = np.array(data_snr[0])
+    stdev_snr = np.array(data_snr[1])
+    length = np.array(data_snr[2])
+    yerr = 2.3263*stdev_snr/np.sqrt(length)
+
+    distances = np.arange(0, len(paths)*FW, FW)
+
+    m1, b1 = np.polyfit(distances, avrg_snr, 1)
+    ax.errorbar(distances, avrg_snr, yerr=yerr)
+    ax.plot(distances, m1*distances + b1, '--')
+    ax.set_xlabel('Distance from receiver (m)')
+    ax.set_ylabel("SNR averaged on multiple packets (dBm)")
     ax.set_xticks(distances)
     ax.legend(loc='upper right')
 
 # Trace a bar chart showing error rates in function of sending power for two nodes
 # INPUT: A 2x2 array containing the list of error rates for each sender, a matplotlib.Axes object where to plot
 # OUTPUT: Updates the matplotlib.Axes object with the wanted bar chart
-def trace_error(data_errors, FW, ax):
+def trace_error(data_errors, data_errors2, FW, ax):
 
     distances = np.arange(0, len(data_errors)*FW, FW)
+    width = 2
 
-    ax.bar(distances, data_errors, label='Drone sender', align='edge')
+    #This is to show a small line in the bar chart when the error rate is below or equal to 0.
+    for i in range(len(data_errors)):
+        if data_errors[i] <= 0:
+            data_errors[i] = 0.2
+    for i in range(len(data_errors2)):
+        if data_errors2[i] <= 0:
+            data_errors2[i] = 0.2
+
+    ax.bar(distances-width/2, data_errors,width=width, label='CR5')
+    ax.bar(distances+width/2, data_errors2,width=width, label='CR8')
     ax.set_ylim(0, 100)
     ax.set_xlabel('Distance from receiver (m)')
     ax.set_ylabel('Error rate (%)')
@@ -99,7 +190,7 @@ def trace_error(data_errors, FW, ax):
 
 def create_path(experience_name):
     path = []
-    radical_path = '../experience_code/data/'+experience_name+'/'
+    radical_path = '../experience_scripts/data/'+experience_name+'/'
     for f in os.listdir(radical_path):
         path.append(radical_path+f)
     path.sort()
@@ -110,8 +201,10 @@ if __name__ == "__main__":
     FW = int(input("Meters forward ? : "))
     # exp_name = input("Experience name ? : ")
     # exp_name2 = input("Experience name ? : ")
-    exp_name = 'exp29_CR5_d30'
-    exp_name2 = 'exp30_CR8_d30'
+    exp_name = 'exp34_CR5'
+    exp_name2 = 'exp34_CR8'
+    exp_name3 = 'exp35_CR5'
+    exp_name4 = 'exp35_CR8'
 
     # fig, (ax1, ax2, ax3, ax4) = plt.subplots(nrows=1, ncols=4, figsize=(22,5))
     #
@@ -180,22 +273,66 @@ if __name__ == "__main__":
     # lines_ax4 = ax4.get_lines()
     # ax4.legend((lines_ax4[0], lines_ax4[2], lines_ax4[4]) ,("Power = 3 dBm", "Power = 8 dBm", "Power = 13 dBm"))
 
-    fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(11,5))
+    fig, ((ax1, ax2, ax3), (ax4, ax5, ax6)) = plt.subplots(nrows=2, ncols=3, figsize=(15,11))
     path = create_path(exp_name)
     path2 = create_path(exp_name2)
+    path3 = create_path(exp_name3)
+    path4 = create_path(exp_name4)
 
-    data_errors = read_errors(path, 53)
-    data_errors2 = read_errors(path2, 53)
+    data_errors = read_errors(path, 2000)
+    data_errors2 = read_errors(path2, 2000)
+    data_errors3 = read_errors(path3, 2000)
+    data_errors4 = read_errors(path4, 2000)
+
+    data_rssi = read_mean_stdev(path)
+    data_rssi2 = read_mean_stdev(path2)
+    data_rssi3 = read_mean_stdev(path3)
+    data_rssi4 = read_mean_stdev(path4)
+
+    data_snr = read_snr(path)
+    data_snr2 = read_snr(path2)
+    data_snr3 = read_snr(path3)
+    data_snr4 = read_snr(path4)
+
+    trace_error(data_errors, data_errors2, FW, ax1)
+    trace_averaged(path, data_rssi, FW, ax2)
+    trace_averaged(path2, data_rssi2, FW, ax2)
+    trace_snr(path, data_snr, FW, ax3)
+    trace_snr(path2, data_snr2, FW, ax3)
+
+    trace_error(data_errors3, data_errors4, FW, ax4)
+    trace_averaged(path3, data_rssi3, FW, ax5)
+    trace_averaged(path4, data_rssi4, FW, ax5)
+    trace_snr(path3, data_snr3, FW, ax6)
+    trace_snr(path4, data_snr4, FW, ax6)
+
 
     print(data_errors)
     print(data_errors2)
+    print(data_errors3)
+    print(data_errors4)
+
+    print(data_rssi)
+    print(data_rssi2)
+    print(data_rssi3)
+    print(data_rssi4)
+
+    lines_ax2 = ax2.get_lines()
+    ax2.legend((lines_ax2[0], lines_ax2[2]) ,("CR=5", "CR=8"))
+
+    lines_ax3 = ax3.get_lines()
+    ax3.legend((lines_ax3[0], lines_ax3[2]) ,("CR=5", "CR=8"))
+
+    lines_ax5 = ax5.get_lines()
+    ax5.legend((lines_ax5[0], lines_ax5[2]) ,("CR=5", "CR=8"))
+
+    lines_ax6 = ax6.get_lines()
+    ax6.legend((lines_ax6[0], lines_ax6[2]) ,("CR=5", "CR=8"))
 
 
-    trace_error(data_errors, FW, ax1)
-    trace_error(data_errors2, FW, ax2)
 
-    ax1.set_title('CR = 5')
-    ax2.set_title('CR = 8')
+    ax1.set_title('Experience 34')
+    ax4.set_title('Experience 35')
 
     fig.tight_layout()
     plt.show()
