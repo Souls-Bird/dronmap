@@ -184,7 +184,7 @@ void loop() {
     Serial.print("\t");
     Serial.print(bme.pressure / 100.0); // pressure in hPa
     Serial.print("\t");
-    Serial.print(bme.humidity); // humidity in %
+    Serial.println(bme.humidity); // humidity in %
 //    Serial.print("\t");
 //    Serial.println(bme.readAltitude(SEALEVELPRESSURE_HPA)); // approximation of altitude in m
 

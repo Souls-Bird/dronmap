@@ -16,8 +16,11 @@ SDI - SDA
 This program sends LoRa packets continuously.
 Each packet contains GPS information, temperature, pressure, humidity and altitude
 The packet looks like :
-[ NODE_NAME | PACKET_COUNTER | POWER | SF | CR | LATITUDE | LAT | LONGITUDE | LON | TEMPERATURE | PRESSURE | HUMIDITY | ALTITUDE | RSSI ]
+[ NODE_NAME | PACKET_COUNTER | POWER | SF | CR | TEMPERATURE | PRESSURE | HUMIDITY | RSSI ]
 where "|" is actualy "\t"
+
+In this version, the packets are sent alternatively with CR 5 and CR 8, for experimentation purpose.
+
 **********************************************/
 
 #include <SPI.h>
