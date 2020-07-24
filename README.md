@@ -77,3 +77,20 @@ These two programs allow to fly the drone and record the transmission data auton
 3. The computer connect with the drone *via* Wifi and take-off.
 4. When hovering, a new thread is created with the save_packets method and the data start to be recorded.
 5. After all steps are done, get back to initial position and land.
+
+## Arduino scripts
+
+In the Arduino folder, you can find the programs that send and receive data with the Arduino MKRWAN1300 module.
+
+### Transmitter
+
+The programs **LoRa_sender, LoRa_sender_sensors and LoRa_sender_sensors_CR** are the three programs that I used on the sender nodes. The packet's fields are :
+> [ NODE_NAME | PACKET_COUNTER | POWER | SF | CR | LATITUDE | LAT | LONGITUDE | LON | TEMPERATURE | PRESSURE | HUMIDITY | ALTITUDE | RSSI | SNR]
+
+- **LoRa_sender** is the most basic and can run with the MKRWAN1300 only. It sends fake data and is used or testing purpose.
+- **LoRa_sender_sensors** include the BME680 sensor breakout and et Ultimate GPS from Adafruit. The code is explicitly separated in three parts : [LoRa], [BME680], [GPS] to make it easy to disable one of the parts by commenting/uncommenting parts of the code. It reads the values of the sensors and send the LoRa packets accordingly.
+- **LoRa_sender_sensors_CR** is quite the same as LoRa_sender_sensors but swap the CR value for each packet, between one CR and another.
+
+### Receiver
+
+The receiver is really simple, it only detect the packets and forward everything to the Serial interface of the board. We try to keep the receiver as simple as possible to reduce the compute power needed on the node as we have a computer to do the job.
