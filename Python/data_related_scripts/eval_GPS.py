@@ -57,10 +57,8 @@ def evaluate_GPS_data(path, ax):
     x = np.arange(N)
 
     for i in range(N):
-        print(dm2dd([latitude[i], longitude[i]]))
         error_GPS = haversine(real_pos, dm2dd([latitude[i], longitude[i]]), unit='m')
         GPS_errors.append(error_GPS)
-        print(error_GPS)
 
     average_error = mean(GPS_errors)
     stdev_error = stdev(GPS_errors)
@@ -76,6 +74,7 @@ def evaluate_GPS_data(path, ax):
 if __name__ == "__main__":
     fig = plt.figure()
     ax = fig.gca()
-    evaluate_GPS_data("./data/eval_GPS_1/data2.csv", ax)
+    path = input("Entrez le chemin vers le fichier .csv : ")
+    evaluate_GPS_data(path, ax)
     fig.tight_layout()
     plt.show()

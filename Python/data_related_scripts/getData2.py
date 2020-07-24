@@ -54,7 +54,7 @@ print(ser.name)
 
 # Paths to the saving folder. Each folder should correspond to a given sending power. THESE FOLDERS MUST EXIST BEFORE EXECUTION
 # Create more paths and expend myPaths list if you need more sending power.
-pathDataA = './data/oups'
+pathDataA = './data/test5/1'
 pathDataB = './data/test5/2'
 pathDataC = './data/test5/3'
 pathDataD = './data/test5/4'

@@ -271,77 +271,70 @@ def results_experience_6_to_17():
     fig.tight_layout()
     plt.show()
 
+def results_experience_29_36_37():
+    FW = int(input("Meters forward ? : "))
+    FW2 = int(input("Meters forward (2) ? : "))
+
+    exp_name = 'exp29_CR5_d30'
+    exp_name2 = 'exp30_CR8_d30'
+    exp_name3 = 'exp36+37_CR5'
+    exp_name4 = 'exp36+37_CR8'
+
+    fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(18,12))
+    path = create_path(exp_name)
+    path2 = create_path(exp_name2)
+    path3 = create_path(exp_name3)
+    path4 = create_path(exp_name4)
+
+    data_errors = read_errors(path, 2300, 120)
+    data_errors2 = read_errors(path2, 2300, 120)
+    data_errors3 = read_errors(path3, 2000, 180)
+    data_errors4 = read_errors(path4, 2000, 180)
+
+    data_rssi = read_mean_stdev(path)
+    data_rssi2 = read_mean_stdev(path2)
+    data_rssi3 = read_mean_stdev(path3)
+    data_rssi4 = read_mean_stdev(path4)
+
+    data_snr = read_snr(path)
+    data_snr2 = read_snr(path2)
+    data_snr3 = read_snr(path3)
+    data_snr4 = read_snr(path4)
+
+    trace_error(data_errors, data_errors2, FW, axes[0][0])
+    trace_averaged(path, data_rssi, FW, axes[0][1])
+    trace_averaged(path2, data_rssi2, FW, axes[0][1])
+    trace_snr(path, data_snr, FW, axes[0][2])
+    trace_snr(path2, data_snr2, FW, axes[0][2])
+
+    trace_error(data_errors3, data_errors4, FW2, axes[1][0])
+    trace_averaged(path3, data_rssi3, FW2, axes[1][1])
+    trace_averaged(path4, data_rssi4, FW2, axes[1][1])
+    trace_snr(path3, data_snr3, FW2, axes[1][2])
+    trace_snr(path4, data_snr4, FW2, axes[1][2])
+
+    lines_ax2 = axes[0][1].get_lines()
+    axes[0][1].legend((lines_ax2[0], lines_ax2[2]) ,("CR=5", "CR=8"))
+
+    lines_ax3 = axes[0][2].get_lines()
+    axes[0][2].legend((lines_ax3[0], lines_ax3[2]) ,("CR=5", "CR=8"))
+
+    lines_ax5 = axes[1][1].get_lines()
+    axes[1][1].legend((lines_ax5[0], lines_ax5[2]) ,("CR=5", "CR=8"))
+
+    lines_ax6 = axes[1][2].get_lines()
+    axes[1][2].legend((lines_ax6[0], lines_ax6[2]) ,("CR=5", "CR=8"))
+
+    # This is to show the row names
+    rows = [exp_name.split('_')[0], exp_name3.split('_')[0]]
+    pad = 5
+    for ax, row in zip(axes[:,0], rows):
+        ax.annotate(row, xy=(0, 0.5), xytext=(-ax.yaxis.labelpad - pad, 0), xycoords=ax.yaxis.label, textcoords='offset points', size='large', ha='right', va='center')
+
+    fig.tight_layout()
+    plt.show()
+
 
 if __name__ == "__main__":
-
-    results_experience_6_to_17()
-
-    # FW = int(input("Meters forward ? : "))
-    # FW2 = int(input("Meters forward (2) ? : "))
-    #
-    #
-    # # exp_name = input("Experience name ? : ")
-    # # exp_name2 = input("Experience name ? : ")
-    # exp_name = 'exp29_CR5_d30'
-    # exp_name2 = 'exp30_CR8_d30'
-    # exp_name3 = 'exp36+37_CR5'
-    # exp_name4 = 'exp36+37_CR8'
-    #
-    #
-    # fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(18,12))
-    # path = create_path(exp_name)
-    # path2 = create_path(exp_name2)
-    # path3 = create_path(exp_name3)
-    # path4 = create_path(exp_name4)
-    #
-    #
-    # data_errors = read_errors(path, 2300, 120)
-    # data_errors2 = read_errors(path2, 2300, 120)
-    # data_errors3 = read_errors(path3, 2000, 180)
-    # data_errors4 = read_errors(path4, 2000, 180)
-    #
-    # data_rssi = read_mean_stdev(path)
-    # data_rssi2 = read_mean_stdev(path2)
-    # data_rssi3 = read_mean_stdev(path3)
-    # data_rssi4 = read_mean_stdev(path4)
-    #
-    #
-    # data_snr = read_snr(path)
-    # data_snr2 = read_snr(path2)
-    # data_snr3 = read_snr(path3)
-    # data_snr4 = read_snr(path4)
-    #
-    #
-    # trace_error(data_errors, data_errors2, FW, axes[0][0])
-    # trace_averaged(path, data_rssi, FW, axes[0][1])
-    # trace_averaged(path2, data_rssi2, FW, axes[0][1])
-    # trace_snr(path, data_snr, FW, axes[0][2])
-    # trace_snr(path2, data_snr2, FW, axes[0][2])
-    #
-    # trace_error(data_errors3, data_errors4, FW2, axes[1][0])
-    # trace_averaged(path3, data_rssi3, FW2, axes[1][1])
-    # trace_averaged(path4, data_rssi4, FW2, axes[1][1])
-    # trace_snr(path3, data_snr3, FW2, axes[1][2])
-    # trace_snr(path4, data_snr4, FW2, axes[1][2])
-    #
-    # lines_ax2 = axes[0][1].get_lines()
-    # axes[0][1].legend((lines_ax2[0], lines_ax2[2]) ,("CR=5", "CR=8"))
-    #
-    # lines_ax3 = axes[0][2].get_lines()
-    # axes[0][2].legend((lines_ax3[0], lines_ax3[2]) ,("CR=5", "CR=8"))
-    #
-    # lines_ax5 = axes[1][1].get_lines()
-    # axes[1][1].legend((lines_ax5[0], lines_ax5[2]) ,("CR=5", "CR=8"))
-    #
-    # lines_ax6 = axes[1][2].get_lines()
-    # axes[1][2].legend((lines_ax6[0], lines_ax6[2]) ,("CR=5", "CR=8"))
-    #
-    #
-    # # This is to show the row names
-    # rows = [exp_name.split('_')[0], exp_name3.split('_')[0]]
-    # pad = 5
-    # for ax, row in zip(axes[:,0], rows):
-    #     ax.annotate(row, xy=(0, 0.5), xytext=(-ax.yaxis.labelpad - pad, 0), xycoords=ax.yaxis.label, textcoords='offset points', size='large', ha='right', va='center')
-    #
-    # fig.tight_layout()
-    # plt.show()
+    # results_experience_6_to_17()
+    # results_experience_29_36_37()
